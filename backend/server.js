@@ -18,11 +18,15 @@ let content = {
   blogs: [{ id: 1, title: "The Future of AI in Legal Tech", author: "Adv. Sharma", summary: "How artificial intelligence is changing contract drafting and review." }],
   notes: [{ id: 1, subject: "Constitution", title: "Fundamental Rights (Art 12-35)", uploadedBy: "Admin" }],
   jobs: [{ id: 1, title: "Legal Advisor", company: "TechLaw Solutions", salary: "₹50,000/mo", type: "Full-Time" }],
-  webinars: [{ id: 1, title: "Drafting Corporate Contracts", speaker: "Adv. Mehra", date: "Oct 25, 2026" }]
+  webinars: [{ id: 1, title: "Drafting Corporate Contracts", speaker: "Adv. Mehra", date: "Oct 25, 2026" }],
+  announcements: [{ id: 1, title: "Orientation Webinar 2026", meta: "August 15, 2026 | 10:00 AM", summary: "Mandatory orientation for all new first-year students." }],
+  qa: [{ id: 1, title: "How do I participate in the Live Quiz?", meta: "System FAQ", summary: "You must be logged in using your Google Account. Navigate to the Live Quiz tab and wait for a faculty member to broadcast a question." }]
 };
 
-// Admin & Faculty Codes
-let validFacultyCodes = ["FACULTY-2026", "ADMIN-MASTER-037"];
+// Security Codes
+const FACULTY_SECRET = process.env.FACULTY_CODE || "FACULTY-2026";
+const ADMIN_SECRET = process.env.ADMIN_CODE || "ADMIN-MASTER-037";
+let validFacultyCodes = [FACULTY_SECRET, ADMIN_SECRET];
 let leaderboard = {};
 
 // --- REST API ENDPOINTS ---
@@ -32,13 +36,9 @@ app.get('/api/:type', (req, res) => {
   else res.status(404).json({ error: "Not found" });
 });
 
-// Admin/Faculty Upload Endpoint
 app.post('/api/upload', (req, res) => {
   const { type, data, code } = req.body;
-  
-  if (!validFacultyCodes.includes(code)) {
-    return res.status(403).json({ error: "Unauthorized Code" });
-  }
+  if (!validFacultyCodes.includes(code)) return res.status(403).json({ error: "Unauthorized Code" });
 
   if (content[type]) {
     content[type].unshift({ id: Date.now(), ...data });

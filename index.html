@@ -12,99 +12,113 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
 
   <style>
-    body { font-family: 'Inter', sans-serif; background-color: #f4f6f9; color: #0f172a; -webkit-font-smoothing: antialiased; }
+    body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #0f172a; -webkit-font-smoothing: antialiased; }
     h1, h2, h3, .font-serif { font-family: 'Playfair Display', serif; }
     
     .page { display: none; animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
     .page.active { display: block; }
     @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     
-    .glass-card { background: #ffffff; border-radius: 16px; box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05); transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid rgba(226, 232, 240, 0.8); }
+    .glass-card { background: #ffffff; border-radius: 12px; box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05); transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid rgba(226, 232, 240, 0.8); }
     .glass-card:hover { box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.1); transform: translateY(-3px); }
     
-    /* Vibrant Gradients */
-    .btn-gradient { background: linear-gradient(135deg, #2563eb, #4f46e5); color: white; transition: all 0.3s ease; }
-    .btn-gradient:hover { background: linear-gradient(135deg, #1d4ed8, #4338ca); box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4); transform: translateY(-1px); }
+    /* Navy & Gold Theme */
+    .btn-gold { background: linear-gradient(135deg, #d4af37, #aa8222); color: white; transition: all 0.3s ease; }
+    .btn-gold:hover { background: linear-gradient(135deg, #b5952f, #8e6c1c); transform: translateY(-1px); }
+    .text-gold { color: #d4af37; }
+    .bg-navy { background-color: #0f172a; }
     
-    .hero-gradient { background: linear-gradient(135deg, #0f172a, #312e81, #1e1b4b); position: relative; overflow: hidden; }
-    .nav-gradient-line { height: 4px; background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899, #f59e0b); }
+    /* Custom Image Banner */
+    .hero-image-banner {
+      background-image: url('./vidhiora-banner.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: 450px;
+      position: relative;
+      border-radius: 1.5rem;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
     
+    /* Marquee Animation for Announcements */
+    .marquee-container { overflow: hidden; white-space: nowrap; }
+    .marquee-content { display: inline-block; animation: marquee 25s linear infinite; }
+    @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
     #mobile-menu { transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out; max-height: 0; opacity: 0; overflow: hidden; }
     #mobile-menu.open { max-height: 400px; opacity: 1; }
   </style>
 </head>
 <body class="flex flex-col min-h-screen">
 
-  <!-- TOP COLOR ACCENT LINE -->
-  <div class="nav-gradient-line w-full"></div>
+  <div class="h-1.5 w-full bg-gradient-to-r from-slate-900 via-[#d4af37] to-slate-900"></div>
 
   <!-- NAVBAR -->
   <nav class="bg-white border-b border-slate-100 sticky top-0 z-50 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-20">
         <div class="flex items-center gap-3 cursor-pointer" onclick="nav('home')">
-          <div class="bg-gradient-to-br from-indigo-600 to-purple-600 text-white p-2.5 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200">
+          <div class="bg-navy text-[#d4af37] p-2.5 rounded-lg flex items-center justify-center shadow-md">
             <i class="fa-solid fa-scale-balanced text-xl"></i>
           </div>
-          <span class="font-serif font-bold text-3xl tracking-tight text-slate-800">Vidhiora</span>
+          <span class="font-serif font-bold text-3xl tracking-tight text-slate-900">Vidhiora</span>
         </div>
         
-        <div class="hidden md:flex space-x-8 items-center text-sm font-semibold text-slate-600">
-          <button onclick="nav('home')" class="hover:text-indigo-600 transition">Articles</button>
-          <button onclick="nav('webinar')" class="hover:text-indigo-600 transition">Webinars</button>
-          <button onclick="nav('quiz')" class="hover:text-indigo-600 transition">Live Quiz</button>
-          <button onclick="nav('jobs')" class="hover:text-indigo-600 transition">Career</button>
+        <div class="hidden md:flex space-x-7 items-center text-sm font-bold text-slate-600">
+          <button onclick="nav('home')" class="hover:text-amber-600 transition">Home</button>
+          <button onclick="nav('webinar')" class="hover:text-amber-600 transition">Webinars</button>
+          <button onclick="nav('quiz')" class="hover:text-amber-600 transition">Live Quiz</button>
+          <button onclick="nav('qa')" class="hover:text-amber-600 transition">Q&A</button>
+          <button onclick="nav('jobs')" class="hover:text-amber-600 transition">Career</button>
           
           <div id="desktop-auth" class="border-l pl-6 border-slate-200">
-            <button onclick="openAuthModal()" class="btn-gradient px-6 py-2.5 rounded-full font-bold">Sign In</button>
+            <button onclick="openAuthModal()" class="btn-gold px-6 py-2.5 rounded-full font-bold shadow-md text-slate-900">Sign In</button>
           </div>
           <div id="desktop-profile" class="hidden border-l pl-6 border-slate-200 flex items-center gap-3">
-            <span id="role-badge" class="hidden bg-rose-100 text-rose-700 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider border border-rose-200">Faculty</span>
-            <img id="user-avatar" src="" class="w-10 h-10 rounded-full border-2 border-indigo-100 shadow-sm hidden">
+            <span id="role-badge" class="hidden bg-rose-100 text-rose-700 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">Faculty</span>
+            <img id="user-avatar" src="" class="w-10 h-10 rounded-full border-2 border-amber-200 shadow-sm hidden">
             <div class="flex flex-col text-left">
               <span id="user-name" class="text-xs font-bold text-slate-900"></span>
-              <button onclick="logout()" class="text-[10px] text-slate-400 hover:text-rose-600 text-left uppercase font-bold tracking-wide transition">Sign Out</button>
+              <button onclick="logout()" class="text-[10px] text-slate-400 hover:text-rose-600 text-left uppercase font-bold transition">Sign Out</button>
             </div>
           </div>
         </div>
 
         <div class="md:hidden flex items-center">
-          <button onclick="toggleMobileMenu()" class="text-indigo-600 hover:text-indigo-900 focus:outline-none p-2">
-            <i class="fa-solid fa-bars text-2xl" id="mobile-menu-icon"></i>
-          </button>
+          <button onclick="toggleMobileMenu()" class="text-slate-900 p-2"><i class="fa-solid fa-bars text-2xl" id="mobile-menu-icon"></i></button>
         </div>
       </div>
     </div>
 
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="md:hidden bg-white border-b border-slate-100 px-4 pt-2 pb-4 space-y-2 shadow-lg absolute w-full">
-      <button onclick="nav('home'); toggleMobileMenu()" class="block w-full text-left px-4 py-3 font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 rounded-lg transition">Articles</button>
-      <button onclick="nav('webinar'); toggleMobileMenu()" class="block w-full text-left px-4 py-3 font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 rounded-lg transition">Webinars</button>
-      <button onclick="nav('quiz'); toggleMobileMenu()" class="block w-full text-left px-4 py-3 font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 rounded-lg transition">Live Quiz</button>
-      <button onclick="nav('jobs'); toggleMobileMenu()" class="block w-full text-left px-4 py-3 font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 rounded-lg transition">Career</button>
+      <button onclick="nav('home'); toggleMobileMenu()" class="block w-full text-left px-4 py-3 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Home</button>
+      <button onclick="nav('webinar'); toggleMobileMenu()" class="block w-full text-left px-4 py-3 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Webinars</button>
+      <button onclick="nav('quiz'); toggleMobileMenu()" class="block w-full text-left px-4 py-3 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Live Quiz</button>
+      <button onclick="nav('qa'); toggleMobileMenu()" class="block w-full text-left px-4 py-3 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Q&A</button>
+      <button onclick="nav('jobs'); toggleMobileMenu()" class="block w-full text-left px-4 py-3 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Career</button>
       <div id="mobile-auth-btn" class="pt-2">
-        <button onclick="openAuthModal(); toggleMobileMenu()" class="w-full btn-gradient font-bold py-3 rounded-xl shadow-lg">Sign In / Register</button>
+        <button onclick="openAuthModal(); toggleMobileMenu()" class="w-full btn-gold font-bold py-3 rounded-xl shadow-lg text-slate-900">Sign In</button>
       </div>
       <div id="mobile-profile" class="hidden pt-2 border-t border-slate-100">
-        <div class="flex items-center gap-3 px-4 py-3"><span id="mobile-user-name" class="font-bold text-indigo-900"></span></div>
-        <button onclick="logout(); toggleMobileMenu()" class="w-full text-left px-4 py-3 font-bold text-rose-600 hover:bg-rose-50 rounded-lg transition">Sign Out</button>
+        <div class="flex items-center gap-3 px-4 py-3"><span id="mobile-user-name" class="font-bold text-slate-900"></span></div>
+        <button onclick="logout(); toggleMobileMenu()" class="w-full text-left px-4 py-3 font-bold text-rose-600 hover:bg-rose-50 rounded-lg">Sign Out</button>
       </div>
     </div>
   </nav>
 
   <!-- AUTH MODAL -->
-  <div id="auth-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-md hidden z-[100] flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+  <div id="auth-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden z-[100] flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
     <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300" id="auth-modal-content">
       <div class="flex border-b border-slate-100">
-        <button onclick="switchAuthTab('student')" id="tab-student" class="flex-1 py-4 font-bold text-sm text-indigo-600 border-b-2 border-indigo-600 bg-indigo-50/50">Student Login</button>
+        <button onclick="switchAuthTab('student')" id="tab-student" class="flex-1 py-4 font-bold text-sm text-slate-900 border-b-2 border-amber-500 bg-amber-50/30">Student Login</button>
         <button onclick="switchAuthTab('faculty')" id="tab-faculty" class="flex-1 py-4 font-bold text-sm text-slate-400 border-b-2 border-transparent hover:text-slate-800 bg-slate-50">Faculty Access</button>
       </div>
       <div class="p-8">
         <div id="auth-student-view">
           <div class="text-center mb-6">
-            <div class="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-indigo-600 text-2xl"><i class="fa-solid fa-user-graduate"></i></div>
             <h3 class="text-2xl font-serif font-bold text-slate-900">Welcome to Vidhiora</h3>
-            <p class="text-sm text-slate-500 mt-2">Unlock live quizzes and premium webinars.</p>
+            <p class="text-sm text-slate-500 mt-2">Log in to unlock features.</p>
           </div>
           <div class="flex justify-center border border-slate-200 p-4 rounded-xl bg-slate-50 shadow-inner">
             <!-- PASTE YOUR GOOGLE CLIENT ID BELOW -->
@@ -114,18 +128,25 @@
         </div>
         <div id="auth-faculty-view" class="hidden">
           <div class="text-center mb-6">
-            <div class="bg-slate-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-amber-400 text-2xl shadow-lg"><i class="fa-solid fa-user-shield"></i></div>
             <h3 class="text-2xl font-serif font-bold text-slate-900">Faculty Portal</h3>
-            <p class="text-sm text-slate-500 mt-2">Secure access for authorized personnel.</p>
+            <p class="text-sm text-slate-500 mt-2">Enter Admin Code.</p>
           </div>
           <div class="space-y-4">
-            <input type="password" id="faculty-code-input" placeholder="Enter Access Code" class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-center tracking-widest font-mono bg-slate-50">
-            <button onclick="handleFacultyLogin()" class="w-full btn-gradient font-bold py-3.5 rounded-xl shadow-lg">Authenticate</button>
+            <input type="password" id="faculty-code-input" placeholder="Enter Access Code" class="w-full p-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none text-center tracking-widest font-mono bg-slate-50">
+            <button onclick="handleFacultyLogin()" class="w-full btn-gold text-slate-900 font-bold py-3.5 rounded-xl shadow-lg">Authenticate</button>
           </div>
         </div>
       </div>
-      <div class="bg-slate-50 p-4 border-t border-slate-100 text-center">
-        <button onclick="closeAuthModal()" class="text-sm font-semibold text-slate-400 hover:text-slate-800 transition">Cancel</button>
+      <div class="bg-slate-50 p-4 border-t border-slate-100 text-center"><button onclick="closeAuthModal()" class="text-sm font-semibold text-slate-400 hover:text-slate-800">Cancel</button></div>
+    </div>
+  </div>
+
+  <!-- LIVE ANNOUNCEMENT TICKER -->
+  <div class="bg-navy text-white text-sm py-2 px-4 shadow-md flex items-center border-b-2 border-[#d4af37]">
+    <span class="font-bold text-[#d4af37] whitespace-nowrap mr-4 px-2 py-0.5 bg-white/10 rounded"><i class="fa-solid fa-bullhorn mr-2"></i>UPDATES</span>
+    <div class="marquee-container w-full">
+      <div class="marquee-content font-medium" id="announcement-ticker">
+        Loading latest announcements...
       </div>
     </div>
   </div>
@@ -135,176 +156,150 @@
     <!-- PAGE: HOME -->
     <section id="home" class="page active">
       
-      <!-- Colorful Hero Banner -->
-      <div class="hero-gradient rounded-[2rem] p-10 md:p-16 text-center md:text-left mb-12 shadow-2xl shadow-indigo-900/20 flex flex-col md:flex-row items-center justify-between gap-8">
-        <!-- Decorative glowing orbs -->
-        <div class="absolute top-0 left-0 w-64 h-64 bg-indigo-500 rounded-full mix-blend-screen filter blur-[80px] opacity-40"></div>
-        <div class="absolute bottom-0 right-0 w-80 h-80 bg-purple-500 rounded-full mix-blend-screen filter blur-[100px] opacity-30"></div>
-        
-        <div class="max-w-2xl relative z-10">
-          <span class="inline-block bg-white/10 backdrop-blur-md border border-white/20 text-indigo-200 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-6">The Future of Law</span>
-          <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-6 leading-tight text-white">Elite Legal Education.<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">Zero Boundaries.</span></h1>
-          <p class="text-lg text-indigo-100/80 mb-0 font-light max-w-xl leading-relaxed">Access landmark judgments, professional insights, and curated study notes in one unified, intelligent hub.</p>
-        </div>
-        <div class="hidden lg:block relative z-10 text-white/10">
-          <i class="fa-solid fa-scale-balanced text-[160px] drop-shadow-2xl transform rotate-[-10deg]"></i>
-        </div>
+      <!-- NEW CUSTOM IMAGE HERO BANNER -->
+      <div class="hero-image-banner mb-10 w-full flex items-end justify-center pb-8">
+        <!-- We removed the text so it doesn't overlap your beautiful uploaded image design -->
+        <button onclick="nav('webinar')" class="bg-white/10 backdrop-blur-md border border-white/30 text-white hover:bg-white hover:text-slate-900 px-8 py-3 rounded-full font-bold shadow-2xl transition duration-300">Explore Platform <i class="fa-solid fa-arrow-right ml-2"></i></button>
       </div>
       
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
-        <div class="lg:col-span-8 space-y-12">
+        <div class="lg:col-span-8 space-y-10">
           
-          <!-- Cases (Crimson/Rose Theme) -->
-          <div class="space-y-6">
-            <div class="flex items-center gap-4 pb-2 mb-2">
-              <div class="bg-rose-100 p-3 rounded-xl text-rose-600"><i class="fa-solid fa-gavel text-2xl"></i></div>
-              <h2 class="text-3xl font-serif font-bold text-slate-800">Landmark Cases</h2>
+          <div class="space-y-4">
+            <div class="flex items-center gap-3 pb-2 border-b-2 border-slate-800">
+              <i class="fa-solid fa-gavel text-2xl text-slate-800"></i><h2 class="text-2xl font-serif font-bold text-slate-900">Landmark Cases</h2>
             </div>
-            <div id="cases-container" class="space-y-5"></div>
+            <div id="cases-container" class="space-y-4"></div>
           </div>
 
-          <!-- Blogs (Indigo Theme) -->
-          <div class="space-y-6">
-            <div class="flex items-center gap-4 pb-2 mb-2 mt-4">
-              <div class="bg-indigo-100 p-3 rounded-xl text-indigo-600"><i class="fa-solid fa-pen-nib text-2xl"></i></div>
-              <h2 class="text-3xl font-serif font-bold text-slate-800">Legal Insights</h2>
+          <div class="space-y-4">
+            <div class="flex items-center gap-3 pb-2 border-b-2 border-blue-800 mt-6">
+              <i class="fa-solid fa-pen-nib text-2xl text-blue-800"></i><h2 class="text-2xl font-serif font-bold text-slate-900">Legal Blog</h2>
             </div>
-            <div id="blogs-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+            <div id="blogs-container" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
           </div>
-
         </div>
 
-        <!-- Notes Sidebar (Amber/Gold Theme) -->
         <div class="lg:col-span-4 relative">
           <div class="sticky top-28 space-y-6">
-            <div class="flex items-center gap-4 pb-2 mb-2 bg-white rounded-xl p-2 border border-slate-100 shadow-sm">
-              <div class="bg-amber-100 p-2.5 rounded-lg text-amber-600"><i class="fa-solid fa-book-open text-xl"></i></div>
-              <h2 class="text-2xl font-serif font-bold text-slate-800">Study Notes</h2>
+            
+            <!-- UPCOMING EVENTS SIDEBAR -->
+            <div class="glass-card p-5 bg-slate-50 border-t-4 border-t-amber-500">
+              <h3 class="font-bold text-slate-800 mb-4 flex items-center"><i class="fa-regular fa-calendar-check text-amber-500 mr-2"></i> Upcoming Events</h3>
+              <div id="events-container" class="space-y-3 max-h-[300px] overflow-y-auto"></div>
             </div>
-            <div id="notes-container" class="space-y-4 max-h-[70vh] overflow-y-auto pr-2 pb-4 scrollbar-hide"></div>
+
+            <!-- STUDY NOTES -->
+            <div class="glass-card p-5">
+              <h3 class="font-bold text-slate-800 mb-4 flex items-center"><i class="fa-solid fa-book-open text-slate-500 mr-2"></i> Study Notes</h3>
+              <div id="notes-container" class="space-y-3 max-h-[350px] overflow-y-auto pr-2 pb-2 scrollbar-hide"></div>
+            </div>
+            
           </div>
         </div>
-        
       </div>
+    </section>
+
+    <!-- PAGE: Q&A SECTION -->
+    <section id="qa" class="page">
+      <div class="mb-10 md:text-center border-b border-slate-200 pb-6">
+        <span class="text-blue-600 font-bold uppercase tracking-widest text-xs">Knowledge Base</span>
+        <h2 class="text-4xl font-serif font-bold text-slate-900 mt-2">Frequently Asked Questions</h2>
+      </div>
+      <div id="qa-container" class="max-w-4xl mx-auto space-y-4"></div>
     </section>
 
     <!-- PAGE: WEBINARS -->
     <section id="webinar" class="page">
-      <div class="mb-10 md:text-center">
-        <span class="text-purple-600 font-bold uppercase tracking-widest text-xs">Live Interaction</span>
+      <div class="mb-10 md:text-center border-b border-slate-200 pb-6">
         <h2 class="text-4xl font-serif font-bold text-slate-900 mt-2">Premium Webinars</h2>
       </div>
-      <div id="webinar-lock" class="glass-card p-12 text-center max-w-xl mx-auto border-t-4 border-t-purple-500">
-        <div class="bg-purple-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6"><i class="fa-solid fa-lock text-4xl text-purple-300"></i></div>
+      <div id="webinar-lock" class="glass-card p-12 text-center max-w-xl mx-auto border-t-4 border-t-navy">
+        <i class="fa-solid fa-lock text-5xl text-slate-300 mb-6"></i>
         <h3 class="text-2xl font-serif font-bold text-slate-800 mb-3">Login Required</h3>
-        <button onclick="openAuthModal()" class="btn-gradient px-8 py-3 rounded-full mt-2 font-bold shadow-lg">Sign In to Unlock</button>
+        <button onclick="openAuthModal()" class="btn-gold text-slate-900 px-8 py-3 rounded-full mt-2 font-bold">Sign In to Unlock</button>
       </div>
       <div id="webinar-content" class="hidden grid grid-cols-1 md:grid-cols-3 gap-8"></div>
     </section>
 
     <!-- PAGE: QUIZ -->
     <section id="quiz" class="page">
-      <div class="mb-10 md:text-center">
-        <span class="text-blue-600 font-bold uppercase tracking-widest text-xs">Test Your Knowledge</span>
+      <div class="mb-10 md:text-center border-b border-slate-200 pb-6">
         <h2 class="text-4xl font-serif font-bold text-slate-900 mt-2">Live Quiz Arena</h2>
       </div>
       <div id="quiz-lock" class="glass-card p-12 text-center max-w-xl mx-auto border-t-4 border-t-blue-500">
-        <div class="bg-blue-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6"><i class="fa-solid fa-shield-halved text-4xl text-blue-300"></i></div>
+        <i class="fa-solid fa-shield-halved text-5xl text-slate-300 mb-6"></i>
         <h3 class="text-2xl font-serif font-bold text-slate-800 mb-3">Identify Yourself</h3>
-        <button onclick="openAuthModal()" class="btn-gradient px-8 py-3 rounded-full mt-2 font-bold shadow-lg">Sign In to Play</button>
+        <button onclick="openAuthModal()" class="btn-gold text-slate-900 px-8 py-3 rounded-full mt-2 font-bold">Sign In to Play</button>
       </div>
       <div id="quiz-content" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div class="lg:col-span-2 glass-card p-8 md:p-12 border-t-4 border-blue-500 bg-white">
-          <div id="question-card" class="hidden">
-            <h3 id="question-text" class="text-2xl font-bold text-slate-800 mb-8 leading-relaxed"></h3>
-            <div id="options-container" class="space-y-4"></div>
-          </div>
-          <div id="waiting-msg" class="text-center py-16">
-            <div class="relative w-20 h-20 mx-auto mb-6">
-              <div class="absolute inset-0 border-4 border-slate-100 rounded-full"></div>
-              <div class="absolute inset-0 border-4 border-blue-500 rounded-full border-t-transparent animate-spin"></div>
-            </div>
-            <h3 class="font-serif text-2xl font-bold text-slate-800">Awaiting Broadcast...</h3>
-          </div>
+          <div id="question-card" class="hidden"><h3 id="question-text" class="text-2xl font-bold text-slate-800 mb-8"></h3><div id="options-container" class="space-y-4"></div></div>
+          <div id="waiting-msg" class="text-center py-16"><i class="fa-solid fa-circle-notch fa-spin text-5xl text-blue-500 mb-6"></i><h3 class="font-serif text-2xl font-bold text-slate-800">Awaiting Broadcast...</h3></div>
         </div>
-        <div class="glass-card p-8 bg-slate-900 text-white relative overflow-hidden">
-          <div class="absolute -right-8 -top-8 text-white/5"><i class="fa-solid fa-trophy text-9xl"></i></div>
-          <h3 class="text-xl font-serif font-bold mb-6 border-b border-slate-700 pb-4 text-amber-400 relative z-10"><i class="fa-solid fa-ranking-star mr-2"></i> Leaderboard</h3>
-          <div id="leaderboard" class="space-y-3 relative z-10"></div>
-        </div>
+        <div class="glass-card p-8 bg-navy text-white"><h3 class="text-xl font-serif font-bold mb-6 border-b border-slate-700 pb-4 text-amber-400"><i class="fa-solid fa-ranking-star mr-2"></i> Leaderboard</h3><div id="leaderboard" class="space-y-3"></div></div>
       </div>
     </section>
 
     <!-- PAGE: JOBS -->
     <section id="jobs" class="page">
-      <div class="mb-10 flex flex-col md:flex-row md:items-end justify-between border-b border-slate-200 pb-6">
-        <div>
-          <span class="text-emerald-600 font-bold uppercase tracking-widest text-xs">Opportunities</span>
-          <h2 class="text-4xl font-serif font-bold text-slate-900 mt-2">Career Portal</h2>
-        </div>
+      <div class="mb-10 md:text-center border-b border-slate-200 pb-6">
+        <h2 class="text-4xl font-serif font-bold text-slate-900 mt-2">Career Portal</h2>
       </div>
       <div id="jobs-container" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
     </section>
 
     <!-- PAGE: ADMIN DASHBOARD -->
     <section id="admin" class="page">
-      <div class="bg-gradient-to-r from-slate-900 to-indigo-950 rounded-[2rem] p-10 mb-10 text-white shadow-2xl relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-64 h-64 bg-indigo-500 rounded-full mix-blend-screen filter blur-[80px] opacity-20"></div>
-        <h2 class="text-3xl md:text-4xl font-serif font-bold relative z-10"><i class="fa-solid fa-server mr-4 text-blue-400"></i>Faculty Control Center</h2>
-        <p class="text-indigo-200 mt-3 font-light relative z-10">Secure publishing and broadcast terminal.</p>
+      <div class="bg-navy rounded-[2rem] p-10 mb-10 text-white shadow-2xl relative overflow-hidden">
+        <h2 class="text-3xl md:text-4xl font-serif font-bold"><i class="fa-solid fa-server mr-4 text-amber-400"></i>Faculty Control Center</h2>
       </div>
       
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
-        <div class="glass-card p-8 border-t-4 border-t-indigo-500 bg-white">
-          <h3 class="font-serif font-bold text-2xl mb-6 text-slate-800"><i class="fa-solid fa-cloud-arrow-up text-indigo-500 mr-2"></i> Publish Content</h3>
-          <div class="space-y-5">
-            <select id="upload-type" class="w-full p-3.5 border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition font-medium">
+        <div class="glass-card p-8 border-t-4 border-t-navy bg-white">
+          <h3 class="font-serif font-bold text-2xl mb-6 text-slate-800"><i class="fa-solid fa-cloud-arrow-up text-navy mr-2"></i> Publish Content</h3>
+          <div class="space-y-4">
+            <select id="upload-type" class="w-full p-3.5 border rounded-xl bg-slate-50 font-medium">
+              <option value="announcements">📢 Announcement / Event</option>
+              <option value="qa">❓ Q&A / FAQ</option>
               <option value="cases">⚖️ Legal Case Update</option>
               <option value="blogs">✍️ Blog Article</option>
               <option value="notes">📚 Study Note</option>
               <option value="jobs">💼 Job Posting</option>
-              <option value="webinars">🎥 Webinar Event</option>
+              <option value="webinars">🎥 Webinar Link</option>
             </select>
-            <input type="text" id="upload-title" placeholder="Document/Case Title" class="w-full p-3.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
-            <input type="text" id="upload-meta" placeholder="Court / Author / Company / Speaker" class="w-full p-3.5 border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none">
-            <textarea id="upload-desc" placeholder="Summary or Details..." rows="4" class="w-full p-3.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"></textarea>
-            <button onclick="uploadContent()" class="w-full btn-gradient font-bold py-4 rounded-xl shadow-lg mt-2">Deploy to Platform</button>
+            <input type="text" id="upload-title" placeholder="Title / Question" class="w-full p-3.5 border rounded-xl">
+            <input type="text" id="upload-meta" placeholder="Meta Data (Date, Time, Court, Author)" class="w-full p-3.5 border rounded-xl bg-slate-50">
+            <textarea id="upload-desc" placeholder="Details or Answer..." rows="3" class="w-full p-3.5 border rounded-xl"></textarea>
+            <button onclick="uploadContent()" class="w-full btn-gold text-slate-900 font-bold py-4 rounded-xl mt-2">Deploy to Platform</button>
           </div>
         </div>
 
         <div class="glass-card p-8 border-t-4 border-t-amber-500 bg-white">
-          <h3 class="font-serif font-bold text-2xl mb-6 text-slate-800"><i class="fa-solid fa-tower-broadcast text-amber-500 mr-2"></i> Live Quiz Broadcast</h3>
-          <div class="space-y-5">
-            <input type="text" id="q-text" placeholder="Question Text" class="w-full p-3.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none font-medium">
-            <input type="text" id="q-opt1" placeholder="Option A" class="w-full p-3.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none">
-            <input type="text" id="q-opt2" placeholder="Option B" class="w-full p-3.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none">
-            <input type="text" id="q-ans" placeholder="Correct Answer (Exact Match)" class="w-full p-3.5 border-2 border-emerald-300 rounded-xl bg-emerald-50 focus:ring-2 focus:ring-emerald-500 outline-none font-bold text-emerald-900">
-            <button onclick="broadcastQuiz()" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-orange-500/30 transition transform hover:-translate-y-1 mt-2">Broadcast Now</button>
+          <h3 class="font-serif font-bold text-2xl mb-6 text-slate-800"><i class="fa-solid fa-tower-broadcast text-amber-500 mr-2"></i> Live Quiz</h3>
+          <div class="space-y-4">
+            <input type="text" id="q-text" placeholder="Question Text" class="w-full p-3.5 border rounded-xl font-medium">
+            <input type="text" id="q-opt1" placeholder="Option A" class="w-full p-3.5 border rounded-xl">
+            <input type="text" id="q-opt2" placeholder="Option B" class="w-full p-3.5 border rounded-xl">
+            <input type="text" id="q-ans" placeholder="Correct Answer (Exact Match)" class="w-full p-3.5 border-2 border-emerald-300 rounded-xl bg-emerald-50 font-bold">
+            <button onclick="broadcastQuiz()" class="w-full bg-slate-900 text-white font-bold py-4 rounded-xl mt-2 hover:bg-slate-800">Broadcast Now</button>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- FOOTER -->
-  <footer class="bg-white border-t border-slate-200 py-10 mt-auto">
-    <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-sm text-slate-500 font-medium">
-      <div class="flex items-center gap-3 mb-4 md:mb-0">
-        <div class="bg-indigo-100 p-2 rounded-lg text-indigo-600"><i class="fa-solid fa-scale-balanced"></i></div>
-        <span>&copy; 2026 Vidhiora. Crafted for Legal Excellence.</span>
-      </div>
+  <footer class="bg-navy py-10 mt-auto text-white">
+    <div class="max-w-7xl mx-auto px-4 flex justify-between items-center text-sm text-slate-400 font-medium">
+      <div class="flex items-center gap-3"><i class="fa-solid fa-scale-balanced text-amber-400 text-xl"></i><span>&copy; 2026 Vidhiora. Crafted for Legal Excellence.</span></div>
     </div>
   </footer>
 
   <script>
     const BACKEND_URL = "https://vidhiora-5m6s.onrender.com"; 
     const socket = io(BACKEND_URL);
-    
-    let userRole = 'guest'; 
-    let currentQuiz = null;
-    let facultyCodeUsed = '';
+    let userRole = 'guest', currentQuiz = null, facultyCodeUsed = '';
 
-    // -- NAV & AUTH UI LOGIC --
     function nav(pageId) {
       if(pageId === 'admin' && userRole !== 'faculty') return openAuthModal('faculty');
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -312,33 +307,27 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
     function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }
-    
     function openAuthModal(defaultTab = 'student') {
-      const modal = document.getElementById('auth-modal');
-      modal.classList.remove('hidden');
+      const modal = document.getElementById('auth-modal'); modal.classList.remove('hidden');
       setTimeout(() => { modal.classList.remove('opacity-0'); document.getElementById('auth-modal-content').classList.remove('scale-95'); }, 10);
       switchAuthTab(defaultTab);
     }
     function closeAuthModal() {
-      document.getElementById('auth-modal').classList.add('opacity-0');
-      document.getElementById('auth-modal-content').classList.add('scale-95');
+      document.getElementById('auth-modal').classList.add('opacity-0'); document.getElementById('auth-modal-content').classList.add('scale-95');
       setTimeout(() => document.getElementById('auth-modal').classList.add('hidden'), 300);
     }
     function switchAuthTab(tab) {
-      const viewS = document.getElementById('auth-student-view'); const viewF = document.getElementById('auth-faculty-view');
-      const btnS = document.getElementById('tab-student'); const btnF = document.getElementById('tab-faculty');
+      const viewS = document.getElementById('auth-student-view'), viewF = document.getElementById('auth-faculty-view');
+      const btnS = document.getElementById('tab-student'), btnF = document.getElementById('tab-faculty');
       if(tab === 'student') {
-        btnS.className = "flex-1 py-4 font-bold text-sm text-indigo-600 border-b-2 border-indigo-600 bg-indigo-50/50";
-        btnF.className = "flex-1 py-4 font-bold text-sm text-slate-400 border-b-2 border-transparent bg-slate-50";
+        btnS.className = "flex-1 py-4 font-bold text-sm text-slate-900 border-b-2 border-amber-500 bg-amber-50/30"; btnF.className = "flex-1 py-4 font-bold text-sm text-slate-400 border-b-2 border-transparent bg-slate-50";
         viewS.classList.remove('hidden'); viewF.classList.add('hidden');
       } else {
-        btnF.className = "flex-1 py-4 font-bold text-sm text-slate-900 border-b-2 border-slate-900 bg-slate-100/50";
-        btnS.className = "flex-1 py-4 font-bold text-sm text-slate-400 border-b-2 border-transparent bg-slate-50";
+        btnF.className = "flex-1 py-4 font-bold text-sm text-slate-900 border-b-2 border-slate-900 bg-slate-100/50"; btnS.className = "flex-1 py-4 font-bold text-sm text-slate-400 border-b-2 border-transparent bg-slate-50";
         viewF.classList.remove('hidden'); viewS.classList.add('hidden');
       }
     }
 
-    // -- LOGIN LOGIC --
     function parseJwt(token) { return JSON.parse(window.atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))); }
     function handleGoogleLogin(response) {
       const data = parseJwt(response.credential);
@@ -347,8 +336,7 @@
     function handleFacultyLogin() {
       const code = document.getElementById('faculty-code-input').value.trim();
       if(!code) return alert("Enter code");
-      userRole = 'faculty'; facultyCodeUsed = code;
-      updateUI("Faculty Admin", null); document.getElementById('role-badge').classList.remove('hidden');
+      userRole = 'faculty'; facultyCodeUsed = code; updateUI("Faculty Admin", null); document.getElementById('role-badge').classList.remove('hidden');
       closeAuthModal(); nav('admin');
     }
     function updateUI(name, imgUrl) {
@@ -370,88 +358,41 @@
       nav('home');
     }
 
-    // -- FETCH & RENDER --
     async function loadData() {
       try {
-        const [cases, blogs, notes, jobs, webinars] = await Promise.all([
-          fetch(`${BACKEND_URL}/api/cases`).then(r=>r.json()),
-          fetch(`${BACKEND_URL}/api/blogs`).then(r=>r.json()),
-          fetch(`${BACKEND_URL}/api/notes`).then(r=>r.json()),
-          fetch(`${BACKEND_URL}/api/jobs`).then(r=>r.json()),
-          fetch(`${BACKEND_URL}/api/webinars`).then(r=>r.json())
+        const [cases, blogs, notes, jobs, webinars, announcements, qa] = await Promise.all([
+          fetch(`${BACKEND_URL}/api/cases`).then(r=>r.json()), fetch(`${BACKEND_URL}/api/blogs`).then(r=>r.json()), fetch(`${BACKEND_URL}/api/notes`).then(r=>r.json()),
+          fetch(`${BACKEND_URL}/api/jobs`).then(r=>r.json()), fetch(`${BACKEND_URL}/api/webinars`).then(r=>r.json()), fetch(`${BACKEND_URL}/api/announcements`).then(r=>r.json()), fetch(`${BACKEND_URL}/api/qa`).then(r=>r.json())
         ]);
 
-        // Crimson Cases
-        document.getElementById('cases-container').innerHTML = cases.map(c => `
-          <div class="glass-card p-6 border-l-4 border-l-rose-500 group">
-            <h3 class="text-xl font-serif font-bold text-slate-900 mb-2 group-hover:text-rose-700 transition">${c.title}</h3>
-            <p class="text-[11px] font-bold text-rose-600 bg-rose-50 inline-block px-2.5 py-1 rounded-md uppercase tracking-wider mb-3"><i class="fa-solid fa-building-columns mr-1"></i> ${c.court}</p>
-            <p class="text-slate-600 text-sm leading-relaxed">${c.summary}</p>
-          </div>`).join('');
+        // Ticker & Sidebar Events
+        const tickerString = announcements.map(a => `⭐ ${a.title} - ${a.meta} ⭐`).join(' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ');
+        document.getElementById('announcement-ticker').innerHTML = tickerString || "Welcome to Vidhiora";
+        document.getElementById('events-container').innerHTML = announcements.map(a => `<div class="border-b border-slate-200 pb-2 last:border-0"><h4 class="font-bold text-sm text-slate-800">${a.title}</h4><p class="text-[10px] text-amber-600 font-bold uppercase mt-0.5">${a.meta}</p><p class="text-xs text-slate-500 mt-1">${a.summary}</p></div>`).join('');
 
-        // Indigo Blogs
-        document.getElementById('blogs-container').innerHTML = blogs.map(b => `
-          <div class="glass-card p-6 border-t-4 border-t-indigo-400 flex flex-col h-full group">
-            <span class="bg-indigo-50 text-indigo-700 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider self-start">Article</span>
-            <h3 class="text-lg font-serif font-bold text-slate-900 mt-4 mb-1 group-hover:text-indigo-600 transition line-clamp-2">${b.title}</h3>
-            <p class="text-xs font-medium text-slate-400 mb-4">By <span class="text-slate-700">${b.author}</span></p>
-            <p class="text-slate-600 text-sm line-clamp-3 mt-auto">${b.summary}</p>
-          </div>`).join('');
+        // Q&A
+        document.getElementById('qa-container').innerHTML = qa.map(q => `<div class="glass-card p-6 border-l-4 border-navy"><h3 class="text-xl font-bold text-slate-900 mb-2">Q: ${q.title}</h3><div class="text-xs bg-slate-100 inline-block px-2 py-1 rounded text-slate-500 mb-3">${q.meta}</div><p class="text-slate-700 bg-slate-50 p-4 rounded-lg border border-slate-100"><strong>Answer:</strong> ${q.summary}</p></div>`).join('');
 
-        // Amber Notes
-        document.getElementById('notes-container').innerHTML = notes.map(n => `
-          <div class="glass-card p-4 border-l-4 border-l-amber-400 flex justify-between items-center cursor-pointer hover:bg-amber-50/30 transition group">
-            <div>
-              <h3 class="font-bold text-slate-800 text-sm group-hover:text-amber-700 transition">${n.title}</h3>
-              <p class="text-[11px] text-slate-500 mt-1.5 font-medium"><i class="fa-solid fa-user-pen mr-1"></i>${n.uploadedBy} <span class="mx-1 text-slate-300">|</span> ${n.subject}</p>
-            </div>
-            <div class="bg-slate-100 p-2.5 rounded-full text-slate-400 group-hover:bg-amber-100 group-hover:text-amber-600 transition"><i class="fa-solid fa-download text-sm"></i></div>
-          </div>`).join('');
-
-        // Emerald Jobs
-        document.getElementById('jobs-container').innerHTML = jobs.map(j => `
-          <div class="glass-card p-8 flex flex-col h-full border-t-4 border-t-emerald-500 group">
-            <span class="inline-block bg-emerald-50 text-emerald-700 font-bold text-[10px] px-3 py-1 rounded-full mb-4 self-start uppercase tracking-wider">${j.type}</span>
-            <h3 class="text-xl font-serif font-bold text-slate-900 mb-2 group-hover:text-emerald-700 transition">${j.title}</h3>
-            <p class="text-slate-500 text-sm mb-6 font-medium"><i class="fa-solid fa-building mr-2 text-emerald-400"></i>${j.company}</p>
-            <div class="mt-auto border-t border-slate-100 pt-5 flex justify-between items-center">
-              <span class="font-bold text-slate-800 text-lg">${j.salary}</span><button class="bg-slate-900 text-white px-5 py-2 rounded-lg font-bold text-xs hover:bg-emerald-600 transition">Apply</button>
-            </div>
-          </div>`).join('');
-
-        // Gradient Webinars
-        document.getElementById('webinar-content').innerHTML = webinars.map(w => `
-          <div class="glass-card overflow-hidden group">
-            <div class="bg-gradient-to-r from-purple-900 to-indigo-900 h-36 flex items-center justify-center relative overflow-hidden">
-              <i class="fa-brands fa-youtube text-6xl text-white/20 group-hover:scale-110 group-hover:text-rose-500 transition duration-500"></i>
-              <div class="absolute top-3 right-3 bg-rose-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-lg"><span class="animate-pulse mr-1">●</span>LIVE</div>
-            </div>
-            <div class="p-6">
-              <h3 class="font-serif font-bold text-lg text-slate-900 mb-2">${w.title}</h3>
-              <p class="text-slate-500 text-sm mb-6 font-medium"><i class="fa-solid fa-microphone-lines mr-2"></i>${w.speaker}</p>
-              <button class="w-full bg-indigo-50 text-indigo-700 font-bold py-2.5 rounded-xl text-sm hover:bg-indigo-600 hover:text-white transition">Join Session</button>
-            </div>
-          </div>`).join('');
+        // Others
+        document.getElementById('cases-container').innerHTML = cases.map(c => `<div class="glass-card p-6 border-l-4 border-l-slate-800"><h3 class="text-xl font-serif font-bold text-slate-900 mb-2">${c.title}</h3><p class="text-[11px] font-bold text-slate-600 bg-slate-100 inline-block px-2 py-1 rounded uppercase mb-2"><i class="fa-solid fa-building-columns mr-1"></i> ${c.court}</p><p class="text-slate-600 text-sm">${c.summary}</p></div>`).join('');
+        document.getElementById('blogs-container').innerHTML = blogs.map(b => `<div class="glass-card p-5 border-t-4 border-t-blue-800 flex flex-col h-full"><span class="bg-blue-50 text-blue-800 text-[10px] font-bold px-2 py-1 rounded uppercase self-start">Article</span><h3 class="text-lg font-serif font-bold text-slate-900 mt-3 mb-1 line-clamp-2">${b.title}</h3><p class="text-xs text-slate-400 mb-3">By <span class="text-slate-700">${b.author}</span></p><p class="text-slate-600 text-sm line-clamp-3 mt-auto">${b.summary}</p></div>`).join('');
+        document.getElementById('notes-container').innerHTML = notes.map(n => `<div class="bg-white border border-slate-100 p-3 rounded-lg flex justify-between items-center hover:shadow-md transition cursor-pointer"><div><h3 class="font-bold text-slate-800 text-sm">${n.title}</h3><p class="text-[10px] text-slate-500 mt-1">${n.uploadedBy} | ${n.subject}</p></div><i class="fa-solid fa-download text-slate-300"></i></div>`).join('');
+        document.getElementById('jobs-container').innerHTML = jobs.map(j => `<div class="glass-card p-6 flex flex-col h-full border-t-4 border-t-emerald-500"><span class="bg-emerald-50 text-emerald-700 font-bold text-[10px] px-2 py-1 rounded self-start uppercase">${j.type}</span><h3 class="text-xl font-serif font-bold text-slate-900 mb-1 mt-3">${j.title}</h3><p class="text-slate-500 text-sm mb-4"><i class="fa-solid fa-building mr-1"></i>${j.company}</p><div class="mt-auto border-t border-slate-100 pt-4 flex justify-between items-center"><span class="font-bold text-slate-800">${j.salary}</span><button class="bg-slate-900 text-white px-4 py-1.5 rounded-lg text-xs font-bold">Apply</button></div></div>`).join('');
+        document.getElementById('webinar-content').innerHTML = webinars.map(w => `<div class="glass-card overflow-hidden"><div class="bg-navy h-32 flex items-center justify-center relative"><i class="fa-brands fa-youtube text-5xl text-white/20"></i><div class="absolute top-2 right-2 bg-rose-500 text-white text-[10px] font-bold px-2 py-1 rounded uppercase"><span class="animate-pulse mr-1">●</span>LIVE</div></div><div class="p-5"><h3 class="font-serif font-bold text-lg text-slate-900 mb-1">${w.title}</h3><p class="text-slate-500 text-sm mb-4"><i class="fa-solid fa-microphone-lines mr-1"></i>${w.speaker}</p><button class="w-full bg-slate-100 text-slate-900 font-bold py-2 rounded-lg text-sm hover:bg-slate-200">Join Session</button></div></div>`).join('');
       } catch (err) { console.log("Backend offline."); }
     }
     loadData();
 
-    // -- FACULTY ACTIONS --
     async function uploadContent() {
       if (userRole !== 'faculty') return alert("Unauthorized");
       const type = document.getElementById('upload-type').value, title = document.getElementById('upload-title').value, meta = document.getElementById('upload-meta').value, desc = document.getElementById('upload-desc').value;
       if (!title || !desc || !meta) return alert("Fill all fields.");
 
-      let data = { title: title };
-      if (type === 'cases') { data.summary = desc; data.court = meta; }
-      else if (type === 'blogs') { data.summary = desc; data.author = meta; }
-      else if (type === 'notes') { data.uploadedBy = meta; data.subject = desc; }
-      else if (type === 'jobs') { data.company = meta; data.salary = desc; data.type = "Full-Time"; }
-      else if (type === 'webinars') { data.speaker = meta; data.date = desc; }
+      let data = { title: title, summary: desc };
+      if (type === 'cases') { data.court = meta; } else if (type === 'blogs') { data.author = meta; } else if (type === 'notes') { data.uploadedBy = meta; data.subject = desc; } else if (type === 'jobs') { data.company = meta; data.salary = desc; data.type = "Full-Time"; } else if (type === 'webinars') { data.speaker = meta; data.date = desc; } else if (type === 'announcements' || type === 'qa') { data.meta = meta; }
 
       const res = await fetch(`${BACKEND_URL}/api/upload`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type, data, code: facultyCodeUsed }) });
-      if (res.ok) { alert("Published."); document.getElementById('upload-title').value = ''; document.getElementById('upload-meta').value = ''; document.getElementById('upload-desc').value = ''; loadData(); }
-      else alert("Server Error.");
+      if (res.ok) { alert("Published."); document.getElementById('upload-title').value = ''; document.getElementById('upload-meta').value = ''; document.getElementById('upload-desc').value = ''; loadData(); } else alert("Server Error.");
     }
 
     function broadcastQuiz() {
@@ -462,25 +403,17 @@
       alert("Broadcast Sent."); document.getElementById('q-text').value = ''; document.getElementById('q-opt1').value = ''; document.getElementById('q-opt2').value = ''; document.getElementById('q-ans').value = '';
     }
 
-    // -- QUIZ SOCKET --
     socket.on('student_receive_question', (q) => {
       currentQuiz = q; document.getElementById('waiting-msg').style.display = 'none'; document.getElementById('question-card').style.display = 'block'; document.getElementById('question-text').innerText = q.question;
-      document.getElementById('options-container').innerHTML = q.options.map(opt => `<button class="w-full text-left p-4.5 border-2 border-slate-100 rounded-xl hover:border-blue-500 hover:bg-blue-50 font-bold text-slate-700 transition" onclick="submitAnswer('${opt}')">${opt}</button>`).join('');
+      document.getElementById('options-container').innerHTML = q.options.map(opt => `<button class="w-full text-left p-4 border-2 border-slate-100 rounded-xl hover:border-blue-500 hover:bg-blue-50 font-bold text-slate-700" onclick="submitAnswer('${opt}')">${opt}</button>`).join('');
     });
     socket.on('update_leaderboard', (list) => {
-      document.getElementById('leaderboard').innerHTML = list.map((u, i) => `
-        <div class="flex justify-between items-center py-3 px-4 rounded-xl ${i===0?'bg-slate-800 border border-slate-700':''}">
-          <div class="flex items-center gap-3">
-            <div class="${i < 3 ? 'bg-amber-500 text-slate-900' : 'bg-slate-800 text-slate-400'} w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">${i+1}</div>
-            <span class="font-bold text-sm text-slate-200">${u.name}</span>
-          </div>
-          <span class="font-bold text-blue-400">${u.score} <span class="text-[10px] text-slate-500 font-normal">pts</span></span>
-        </div>`).join('');
+      document.getElementById('leaderboard').innerHTML = list.map((u, i) => `<div class="flex justify-between items-center py-2 border-b border-slate-800 last:border-0"><div class="flex items-center gap-2"><div class="${i < 3 ? 'text-amber-400' : 'text-slate-500'} font-bold">${i+1}</div><span class="font-bold text-sm">${u.name}</span></div><span class="font-bold text-amber-400">${u.score}</span></div>`).join('');
     });
     function submitAnswer(opt) {
       if (userRole !== 'student') return;
       socket.emit('student_submit_answer', { email: currentUser.email, name: currentUser.name, points: opt === currentQuiz.correctAnswer ? 10 : 0 });
-      document.getElementById('question-card').style.display = 'none'; document.getElementById('waiting-msg').innerHTML = "<i class='fa-solid fa-circle-check text-emerald-500 text-5xl mb-4 shadow-lg shadow-emerald-500/20 rounded-full'></i><h3 class='font-serif text-2xl font-bold text-slate-800'>Answer Submitted</h3><p class='text-slate-500 mt-2'>Awaiting next round...</p>"; document.getElementById('waiting-msg').style.display = 'block';
+      document.getElementById('question-card').style.display = 'none'; document.getElementById('waiting-msg').innerHTML = "<i class='fa-solid fa-circle-check text-emerald-500 text-5xl mb-4'></i><h3 class='font-serif text-2xl font-bold text-slate-800'>Answer Submitted</h3>"; document.getElementById('waiting-msg').style.display = 'block';
     }
   </script>
 </body>
