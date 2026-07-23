@@ -671,20 +671,76 @@
       document.getElementById('q-ans').value = '';
     }
 
+   // State variable for the currently selected option
+    let selectedQuizOption = null;
+
     socket.on('student_receive_question', (q) => {
-      currentQuiz = q; document.getElementById('waiting-msg').style.display = 'none'; document.getElementById('question-card').style.display = 'block'; document.getElementById('question-text').innerText = q.question;
-      document.getElementById('options-container').innerHTML = q.options.map(opt => `<button class="w-full text-left p-4 border-2 border-slate-100 rounded-xl hover:border-blue-500 hover:bg-blue-50 font-bold text-slate-700" onclick="submitAnswer('${opt}')">${opt}</button>`).join('');
+      currentQuiz = q; 
+      selectedQuizOption = null; // Reset selection for a new question
+      
+      document.getElementById('waiting-msg').style.display = 'none'; 
+      document.getElementById('question-card').style.display = 'block'; 
+      document.getElementById('question-text').innerText = q.question;
+      
+      // 1. Generate selectable options
+      const optionsHTML = q.options.map((opt, index) => 
+        `<button id="quiz-opt-${index}" class="quiz-option-btn w-full text-left p-4 border-2 border-slate-100 rounded-xl hover:border-blue-500 hover:bg-blue-50 font-bold text-slate-700 transition" onclick="selectQuizOption('${opt}', ${index})">${opt}</button>`
+      ).join('');
+      
+      // 2. Add the final Submit button underneath
+      const submitButtonHTML = `<button onclick="confirmQuizSubmit()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl mt-6 transition shadow-lg"><i class="fa-solid fa-paper-plane mr-2"></i> Submit Answer</button>`;
+      
+      document.getElementById('options-container').innerHTML = optionsHTML + submitButtonHTML;
     });
-    
+
+    // Helper function to visually highlight the selected option
+    function selectQuizOption(opt, index) {
+      selectedQuizOption = opt;
+      
+      // Remove highlight from all options
+      document.querySelectorAll('.quiz-option-btn').forEach(btn => {
+        btn.classList.remove('border-blue-500', 'bg-blue-100', 'ring-2', 'ring-blue-300');
+        btn.classList.add('border-slate-100');
+      });
+      
+      // Add highlight to the specific clicked option
+      const selectedBtn = document.getElementById(`quiz-opt-${index}`);
+      selectedBtn.classList.remove('border-slate-100');
+      selectedBtn.classList.add('border-blue-500', 'bg-blue-100', 'ring-2', 'ring-blue-300');
+    }
+
+    // Helper function to validate before submitting
+    function confirmQuizSubmit() {
+      if (!selectedQuizOption) {
+        showToast("Please select an answer before submitting.", "warning");
+        return;
+      }
+      if (userRole !== 'student') {
+        showToast("Only logged-in students can submit quiz answers. Faculty cannot play.", "error");
+        return;
+      }
+      
+      // If validation passes, run the actual submission
+      submitAnswer(selectedQuizOption);
+    }
+
+    // The actual backend submission logic
+    function submitAnswer(opt) {
+      socket.emit('student_submit_answer', { 
+        email: currentUser.email, 
+        name: currentUser.name, 
+        points: opt === currentQuiz.correctAnswer ? 10 : 0 
+      });
+      
+      document.getElementById('question-card').style.display = 'none'; 
+      document.getElementById('waiting-msg').innerHTML = "<i class='fa-solid fa-circle-check text-emerald-500 text-5xl mb-4'></i><h3 class='font-serif text-2xl font-bold text-slate-800'>Answer Submitted!</h3>"; 
+      document.getElementById('waiting-msg').style.display = 'block';
+    }
+
     socket.on('update_leaderboard', (list) => {
       document.getElementById('leaderboard').innerHTML = list.map((u, i) => `<div class="flex justify-between items-center py-2 border-b border-slate-800 last:border-0"><div class="flex items-center gap-2"><div class="${i < 3 ? 'text-amber-400' : 'text-slate-500'} font-bold">${i+1}</div><span class="font-bold text-sm">${u.name}</span></div><span class="font-bold text-amber-400">${u.score}</span></div>`).join('');
     });
-    
-    function submitAnswer(opt) {
-      if (userRole !== 'student') return;
-      socket.emit('student_submit_answer', { email: currentUser.email, name: currentUser.name, points: opt === currentQuiz.correctAnswer ? 10 : 0 });
-      document.getElementById('question-card').style.display = 'none'; document.getElementById('waiting-msg').innerHTML = "<i class='fa-solid fa-circle-check text-emerald-500 text-5xl mb-4'></i><h3 class='font-serif text-2xl font-bold text-slate-800'>Answer Submitted</h3>"; document.getElementById('waiting-msg').style.display = 'block';
-    }
+
   </script>
 </body>
 </html>
