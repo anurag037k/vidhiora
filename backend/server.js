@@ -89,6 +89,23 @@ io.on('connection', (socket) => {
     io.emit('update_leaderboard', sorted);
   });
 });
+function showToast(message, type = 'success') {
+  const toast = document.getElementById('toast-notification');
+  const msg = document.getElementById('toast-message');
+  const icon = document.getElementById('toast-icon');
 
+  msg.innerText = message;
+  if(type === 'success') {
+    icon.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-400"></i>';
+  } else {
+    icon.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-rose-400"></i>';
+  }
+
+  toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+  
+  setTimeout(() => {
+    toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+  }, 3500);
+}
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => console.log(`Vidhiora Backend active on port ${PORT}`));

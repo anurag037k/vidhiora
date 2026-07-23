@@ -307,10 +307,46 @@
     </div>
   </footer>
 
+  <!-- PROFESSIONAL TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-notification" class="fixed bottom-6 right-6 z-[200] transform translate-y-20 opacity-0 transition-all duration-300 ease-in-out pointer-events-none" role="status" aria-live="polite">
+    <div class="bg-slate-900 text-white px-6 py-4 rounded-xl shadow-2xl border border-slate-800 flex items-center gap-3">
+      <div id="toast-icon" class="text-amber-400 text-lg">
+        <i class="fa-solid fa-circle-check"></i>
+      </div>
+      <span id="toast-message" class="text-sm font-medium">Action successful</span>
+    </div>
+  </div>
+
   <script>
     const BACKEND_URL = "https://vidhiora-5m6s.onrender.com"; 
     const socket = io(BACKEND_URL);
     let userRole = 'guest', currentQuiz = null, facultyCodeUsed = '';
+    
+    // Toast logic
+    let toastTimer = null;
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast-notification');
+      const msg = document.getElementById('toast-message');
+      const icon = document.getElementById('toast-icon');
+
+      msg.innerText = message;
+      
+      if (type === 'success') {
+        icon.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-400"></i>';
+      } else if (type === 'warning') {
+        icon.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-amber-400"></i>';
+      } else {
+        icon.innerHTML = '<i class="fa-solid fa-circle-xmark text-rose-400"></i>';
+      }
+
+      toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+
+      if (toastTimer) clearTimeout(toastTimer);
+
+      toastTimer = setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+      }, 3500);
+    }
 
     function nav(pageId) {
       if(pageId === 'admin' && userRole !== 'faculty') return openAuthModal('faculty');
@@ -347,7 +383,10 @@
     }
     function handleFacultyLogin() {
       const code = document.getElementById('faculty-code-input').value.trim();
-      if(!code) return alert("Enter code");
+      if(!code) {
+        showToast("Enter code", "warning");
+        return;
+      }
       userRole = 'faculty'; facultyCodeUsed = code; updateUI("Faculty Admin", null); document.getElementById('role-badge').classList.remove('hidden');
       closeAuthModal(); nav('admin'); loadData();
     }
@@ -430,19 +469,40 @@
     loadData();
 
     async function uploadContent() {
-      if (userRole !== 'faculty') return alert("Unauthorized");
+      if (userRole !== 'faculty') {
+        showToast("Unauthorized", "error");
+        return;
+      }
+      
       const type = document.getElementById('upload-type').value, title = document.getElementById('upload-title').value, meta = document.getElementById('upload-meta').value, desc = document.getElementById('upload-desc').value;
-      if (!title || !desc || !meta) return alert("Fill all fields.");
+      
+      if (!title || !desc || !meta) {
+        showToast("Fill all fields.", "warning");
+        return;
+      }
 
       let data = { title: title, summary: desc };
       if (type === 'cases') { data.court = meta; } else if (type === 'blogs') { data.author = meta; } else if (type === 'notes') { data.uploadedBy = meta; data.subject = desc; } else if (type === 'jobs') { data.company = meta; data.salary = desc; data.type = "Full-Time"; } else if (type === 'webinars') { data.speaker = meta; data.date = desc; } else if (type === 'announcements' || type === 'qa') { data.meta = meta; }
 
       const res = await fetch(`${BACKEND_URL}/api/upload`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type, data, code: facultyCodeUsed }) });
-      if (res.ok) { alert("Published."); document.getElementById('upload-title').value = ''; document.getElementById('upload-meta').value = ''; document.getElementById('upload-desc').value = ''; loadData(); } else alert("Server Error.");
+      
+      if (res.ok) { 
+        showToast("Published successfully.", "success"); 
+        document.getElementById('upload-title').value = ''; 
+        document.getElementById('upload-meta').value = ''; 
+        document.getElementById('upload-desc').value = ''; 
+        loadData(); 
+      } else {
+        showToast("Server Error.", "error");
+      }
     }
 
     async function deleteContent(type, id) {
-      if (userRole !== 'faculty') return alert("Unauthorized access.");
+      if (userRole !== 'faculty') {
+        showToast("Unauthorized access.", "error");
+        return;
+      }
+      
       if (!confirm("Are you sure you want to delete this content?")) return;
 
       try {
@@ -451,30 +511,46 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ code: facultyCodeUsed })
         });
+        
         if (res.ok) {
           loadData(); 
+          showToast("Content deleted.", "success");
         } else {
           const err = await res.json();
-          alert(`Error: ${err.error || "Failed to delete"}`);
+          showToast(`Error: ${err.error || "Failed to delete"}`, "error");
         }
-      } catch (err) { alert("Server error. Check your connection."); }
+      } catch (err) { 
+        showToast("Server error. Check your connection.", "error"); 
+      }
     }
 
     function broadcastQuiz() {
       if (userRole !== 'faculty') return;
       const q = document.getElementById('q-text').value, o1 = document.getElementById('q-opt1').value, o2 = document.getElementById('q-opt2').value, ans = document.getElementById('q-ans').value;
-      if (!q || !o1 || !o2 || !ans) return alert("Fill all fields.");
+      
+      if (!q || !o1 || !o2 || !ans) {
+        showToast("Fill all fields.", "warning");
+        return;
+      }
+      
       socket.emit('faculty_start_quiz', { code: facultyCodeUsed, questionData: { question: q, options: [o1, o2], correctAnswer: ans } });
-      alert("Broadcast Sent."); document.getElementById('q-text').value = ''; document.getElementById('q-opt1').value = ''; document.getElementById('q-opt2').value = ''; document.getElementById('q-ans').value = '';
+      showToast("Broadcast Sent.", "success"); 
+      
+      document.getElementById('q-text').value = ''; 
+      document.getElementById('q-opt1').value = ''; 
+      document.getElementById('q-opt2').value = ''; 
+      document.getElementById('q-ans').value = '';
     }
 
     socket.on('student_receive_question', (q) => {
       currentQuiz = q; document.getElementById('waiting-msg').style.display = 'none'; document.getElementById('question-card').style.display = 'block'; document.getElementById('question-text').innerText = q.question;
       document.getElementById('options-container').innerHTML = q.options.map(opt => `<button class="w-full text-left p-4 border-2 border-slate-100 rounded-xl hover:border-blue-500 hover:bg-blue-50 font-bold text-slate-700" onclick="submitAnswer('${opt}')">${opt}</button>`).join('');
     });
+    
     socket.on('update_leaderboard', (list) => {
       document.getElementById('leaderboard').innerHTML = list.map((u, i) => `<div class="flex justify-between items-center py-2 border-b border-slate-800 last:border-0"><div class="flex items-center gap-2"><div class="${i < 3 ? 'text-amber-400' : 'text-slate-500'} font-bold">${i+1}</div><span class="font-bold text-sm">${u.name}</span></div><span class="font-bold text-amber-400">${u.score}</span></div>`).join('');
     });
+    
     function submitAnswer(opt) {
       if (userRole !== 'student') return;
       socket.emit('student_submit_answer', { email: currentUser.email, name: currentUser.name, points: opt === currentQuiz.correctAnswer ? 10 : 0 });
