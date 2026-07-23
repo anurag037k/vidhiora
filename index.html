@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vidhiora - Legal Learning & Career Hub</title>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <style>
+    :root {
+      --primary: #0f172a;
+      --accent: #38bdf8;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); }
+
+    header {
+      background-color: var(--primary);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand h1 { color: var(--accent); font-size: 1.5rem; }
+    .brand p { font-size: 0.75rem; color: #94a3b8; }
+
+    .mode-btn {
+      background: #334155;
+      color: white;
+      border: 1px solid #475569;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    nav {
+      background-color: #1e293b;
+      display: flex;
+      gap: 0.5rem;
+      padding: 0.5rem 2rem;
+      overflow-x: auto;
+    }
+
+    nav button {
+      background: transparent;
+      color: #94a3b8;
+      border: none;
+      padding: 0.6rem 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    nav button.active { background: #0284c7; color: white; }
+
+    main { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+    .page { display: none; }
+    .page.active { display: block; }
+
+    h2 { margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #e2e8f0; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .card { background: var(--card-bg); padding: 1.25rem; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+
+    .badge { display: inline-block; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .badge-blue { background: #e0f2fe; color: #0369a1; }
+    .badge-amber { background: #fef3c7; color: #b45309; }
+    .badge-green { background: #dcfce7; color: #15803d; }
+
+    .btn { width: 100%; padding: 0.6rem; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; margin-top: 1rem; }
+    .btn-primary { background: #0284c7; color: white; }
+    .btn-success { background: #16a34a; color: white; }
+
+    .quiz-box { background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; }
+    input[type="text"] { width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 4px; margin-bottom: 1rem; }
+
+    .option-btn { display: block; width: 100%; padding: 0.75rem; margin: 0.5rem 0; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 4px; text-align: left; cursor: pointer; }
+    .leaderboard-row { display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid #f1f5f9; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <h1>Vidhiora</h1>
+      <p>Legal Knowledge Hub</p>
+    </div>
+    <button class="mode-btn" onclick="toggleMode()">Mode: <strong id="mode-text">STUDENT</strong></button>
+  </header>
+
+  <nav>
+    <button class="nav-link active" onclick="switchTab(event, 'news')">📰 News</button>
+    <button class="nav-link" onclick="switchTab(event, 'notes')">📚 Notes</button>
+    <button class="nav-link" onclick="switchTab(event, 'bareacts')">⚖️ Bare Acts</button>
+    <button class="nav-link" onclick="switchTab(event, 'webinars')">🎥 Webinars</button>
+    <button class="nav-link" onclick="switchTab(event, 'quiz')">🎯 Live Quiz</button>
+    <button class="nav-link" onclick="switchTab(event, 'career')">💼 Career</button>
+  </nav>
+
+  <main>
+    <section id="news" class="page active">
+      <h2>⚖️ Legal News & Judgments</h2>
+      <div class="grid" id="news-grid"></div>
+    </section>
+
+    <section id="notes" class="page">
+      <h2>📚 Study Notes & Resources</h2>
+      <div class="grid" id="notes-grid"></div>
+    </section>
+
+    <section id="bareacts" class="page">
+      <h2>📜 Bare Acts & Key Provisions</h2>
+      <div class="card" style="margin-bottom: 1rem;">
+        <span class="badge badge-blue">Constitution of India</span>
+        <h3>Article 21: Protection of Life and Personal Liberty</h3>
+        <p>No person shall be deprived of his life or personal liberty except according to procedure established by law.</p>
+      </div>
+    </section>
+
+    <section id="webinars" class="page">
+      <h2>🎥 Live Webinars</h2>
+      <div class="grid">
+        <div class="card">
+          <span class="badge badge-green">Upcoming</span>
+          <h3>Moot Court Drafting & Argument Strategy</h3>
+          <p>Speaker: Adv. Rajesh Kumar (Supreme Court)</p>
+          <button class="btn btn-success">Join Interactive Session</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="quiz" class="page">
+      <h2>🎯 Live Quiz Arena</h2>
+      
+      <div id="faculty-controls" style="display: none;" class="quiz-box">
+        <h3>Faculty Quiz Panel</h3>
+        <p>Click to broadcast a real-time question to all active students.</p>
+        <button class="btn btn-primary" onclick="pushQuestion()">Push Live Question</button>
+      </div>
+
+      <div id="student-controls" class="quiz-box">
+        <input type="text" id="student-name" placeholder="Enter your full name to join..." />
+        <div id="question-card" style="display: none;">
+          <h3 id="question-text"></h3>
+          <div id="options-container"></div>
+        </div>
+        <p id="waiting-msg">Waiting for faculty to start the quiz...</p>
+      </div>
+
+      <h3>🏆 Live Leaderboard</h3>
+      <div class="quiz-box" id="leaderboard">
+        <p>No scores submitted yet.</p>
+      </div>
+    </section>
+
+    <section id="career" class="page">
+      <h2>💼 Opportunities & Internships</h2>
+      <div class="grid" id="career-grid"></div>
+    </section>
+  </main>
+
+  <script>
+    // Replace with your live Render URL once backend is deployed
+    const BACKEND_URL = "http://localhost:5000"; 
+    
+    let role = 'student';
+    let socket = io(BACKEND_URL);
+    let currentQuestion = null;
+
+    async function fetchContent() {
+      try {
+        const [newsRes, notesRes, careerRes] = await Promise.all([
+          fetch(`${BACKEND_URL}/api/news`),
+          fetch(`${BACKEND_URL}/api/notes`),
+          fetch(`${BACKEND_URL}/api/career`)
+        ]);
+
+        const news = await newsRes.json();
+        const notes = await notesRes.json();
+        const careers = await careerRes.json();
+
+        document.getElementById('news-grid').innerHTML = news.map(n => `
+          <div class="card">
+            <span class="badge badge-blue">${n.category}</span>
+            <h3>${n.title}</h3>
+            <p>${n.summary}</p>
+          </div>
+        `).join('');
+
+        document.getElementById('notes-grid').innerHTML = notes.map(n => `
+          <div class="card">
+            <span class="badge badge-amber">${n.subject}</span>
+            <h3>${n.title}</h3>
+            <p>Uploaded by: ${n.uploadedBy}</p>
+            <button class="btn btn-primary">Download PDF</button>
+          </div>
+        `).join('');
+
+        document.getElementById('career-grid').innerHTML = careers.map(c => `
+          <div class="card">
+            <span class="badge badge-green">${c.type}</span>
+            <h3>${c.title}</h3>
+            <p>Stipend: ${c.stipend}</p>
+            <button class="btn btn-success">Apply Now</button>
+          </div>
+        `).join('');
+      } catch (err) {
+        console.error("Backend offline or loading local fallbacks.", err);
+      }
+    }
+
+    fetchContent();
+
+    function switchTab(evt, tabId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
+      
+      document.getElementById(tabId).classList.add('active');
+      evt.target.classList.add('active');
+    }
+
+    function toggleMode() {
+      role = role === 'student' ? 'faculty' : 'student';
+      document.getElementById('mode-text').innerText = role.toUpperCase();
+      document.getElementById('faculty-controls').style.display = role === 'faculty' ? 'block' : 'none';
+      document.getElementById('student-controls').style.display = role === 'student' ? 'block' : 'none';
+    }
+
+    socket.on('student_receive_question', (q) => {
+      currentQuestion = q;
+      document.getElementById('waiting-msg').style.display = 'none';
+      document.getElementById('question-card').style.display = 'block';
+      document.getElementById('question-text').innerText = q.question;
+      
+      document.getElementById('options-container').innerHTML = q.options.map(opt => 
+        `<button class="option-btn" onclick="submitAnswer('${opt}')">${opt}</button>`
+      ).join('');
+    });
+
+    socket.on('update_leaderboard', (list) => {
+      document.getElementById('leaderboard').innerHTML = list.map((u, i) => `
+        <div class="leaderboard-row">
+          <span><strong>#${i+1}</strong> ${u.name}</span>
+          <span>${u.score} pts</span>
+        </div>
+      `).join('') || '<p>No scores submitted yet.</p>';
+    });
+
+    function pushQuestion() {
+      socket.emit('faculty_start_quiz', {
+        question: "Which Article of the Indian Constitution guarantees Constitutional Remedies?",
+        options: ["Article 14", "Article 19", "Article 21", "Article 32"],
+        correctAnswer: "Article 32"
+      });
+    }
+
+    function submitAnswer(opt) {
+      const name = document.getElementById('student-name').value;
+      if (!name) return alert("Please enter your name first!");
+      
+      const points = opt === currentQuestion.correctAnswer ? 10 : 0;
+      socket.emit('student_submit_answer', { studentName: name, points: points });
+      
+      document.getElementById('question-card').style.display = 'none';
+      document.getElementById('waiting-msg').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
