@@ -58,9 +58,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-20">
         <div class="flex items-center gap-3 cursor-pointer" onclick="nav('home')">
-          <div class="bg-navy text-[#d4af37] p-2.5 rounded-lg flex items-center justify-center shadow-md">
-            <i class="fa-solid fa-scale-balanced text-xl"></i>
-          </div>
+          <img src="./logo.png" alt="Vidhiora Logo" class="h-12 w-auto">
           <span class="font-serif font-bold text-3xl tracking-tight text-slate-900">Vidhiora</span>
         </div>
         
@@ -122,7 +120,7 @@
           </div>
           <div class="flex justify-center border border-slate-200 p-4 rounded-xl bg-slate-50 shadow-inner">
             <!-- PASTE YOUR GOOGLE CLIENT ID BELOW -->
-            <div id="g_id_onload" data-client_id="356568812180-p3u8ttkv5nis5tv786mrf78aca83eib9.apps.googleusercontent.com" data-callback="handleGoogleLogin"></div>
+            <div id="g_id_onload" data-client_id="YOUR_GOOGLE_CLIENT_ID_HERE" data-callback="handleGoogleLogin"></div>
             <div class="g_id_signin" data-type="standard" data-theme="outline" data-size="large" data-text="sign_in_with"></div>
           </div>
         </div>
@@ -155,10 +153,7 @@
 
     <!-- PAGE: HOME -->
     <section id="home" class="page active">
-      
-      <!-- NEW CUSTOM IMAGE HERO BANNER -->
       <div class="hero-image-banner mb-10 w-full flex items-end justify-center pb-8">
-        <!-- We removed the text so it doesn't overlap your beautiful uploaded image design -->
         <button onclick="nav('webinar')" class="bg-white/10 backdrop-blur-md border border-white/30 text-white hover:bg-white hover:text-slate-900 px-8 py-3 rounded-full font-bold shadow-2xl transition duration-300">Explore Platform <i class="fa-solid fa-arrow-right ml-2"></i></button>
       </div>
       
@@ -182,19 +177,15 @@
 
         <div class="lg:col-span-4 relative">
           <div class="sticky top-28 space-y-6">
-            
-            <!-- UPCOMING EVENTS SIDEBAR -->
             <div class="glass-card p-5 bg-slate-50 border-t-4 border-t-amber-500">
               <h3 class="font-bold text-slate-800 mb-4 flex items-center"><i class="fa-regular fa-calendar-check text-amber-500 mr-2"></i> Upcoming Events</h3>
               <div id="events-container" class="space-y-3 max-h-[300px] overflow-y-auto"></div>
             </div>
 
-            <!-- STUDY NOTES -->
             <div class="glass-card p-5">
               <h3 class="font-bold text-slate-800 mb-4 flex items-center"><i class="fa-solid fa-book-open text-slate-500 mr-2"></i> Study Notes</h3>
               <div id="notes-container" class="space-y-3 max-h-[350px] overflow-y-auto pr-2 pb-2 scrollbar-hide"></div>
             </div>
-            
           </div>
         </div>
       </div>
@@ -331,13 +322,13 @@
     function parseJwt(token) { return JSON.parse(window.atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))); }
     function handleGoogleLogin(response) {
       const data = parseJwt(response.credential);
-      userRole = 'student'; updateUI(data.name, data.picture); closeAuthModal();
+      userRole = 'student'; updateUI(data.name, data.picture); closeAuthModal(); loadData();
     }
     function handleFacultyLogin() {
       const code = document.getElementById('faculty-code-input').value.trim();
       if(!code) return alert("Enter code");
       userRole = 'faculty'; facultyCodeUsed = code; updateUI("Faculty Admin", null); document.getElementById('role-badge').classList.remove('hidden');
-      closeAuthModal(); nav('admin');
+      closeAuthModal(); nav('admin'); loadData();
     }
     function updateUI(name, imgUrl) {
       document.getElementById('desktop-auth').classList.add('hidden'); document.getElementById('desktop-profile').classList.remove('hidden');
@@ -355,7 +346,7 @@
       document.getElementById('mobile-auth-btn').classList.remove('hidden'); document.getElementById('mobile-profile').classList.add('hidden');
       document.getElementById('webinar-lock').style.display = 'block'; document.getElementById('webinar-content').classList.add('hidden');
       document.getElementById('quiz-lock').style.display = 'block'; document.getElementById('quiz-content').classList.add('hidden');
-      nav('home');
+      nav('home'); loadData();
     }
 
     async function loadData() {
@@ -365,20 +356,36 @@
           fetch(`${BACKEND_URL}/api/jobs`).then(r=>r.json()), fetch(`${BACKEND_URL}/api/webinars`).then(r=>r.json()), fetch(`${BACKEND_URL}/api/announcements`).then(r=>r.json()), fetch(`${BACKEND_URL}/api/qa`).then(r=>r.json())
         ]);
 
-        // Ticker & Sidebar Events
         const tickerString = announcements.map(a => `⭐ ${a.title} - ${a.meta} ⭐`).join(' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ');
         document.getElementById('announcement-ticker').innerHTML = tickerString || "Welcome to Vidhiora";
-        document.getElementById('events-container').innerHTML = announcements.map(a => `<div class="border-b border-slate-200 pb-2 last:border-0"><h4 class="font-bold text-sm text-slate-800">${a.title}</h4><p class="text-[10px] text-amber-600 font-bold uppercase mt-0.5">${a.meta}</p><p class="text-xs text-slate-500 mt-1">${a.summary}</p></div>`).join('');
+        
+        document.getElementById('events-container').innerHTML = announcements.map(a => `<div class="border-b border-slate-200 pb-2 last:border-0 relative">
+          ${userRole === 'faculty' ? `<button onclick="deleteContent('announcements', ${a.id})" class="absolute top-0 right-0 text-rose-500 hover:text-rose-700 text-xs transition"><i class="fa-solid fa-trash"></i></button>` : ''}
+          <h4 class="font-bold text-sm text-slate-800 pr-6">${a.title}</h4><p class="text-[10px] text-amber-600 font-bold uppercase mt-0.5">${a.meta}</p><p class="text-xs text-slate-500 mt-1">${a.summary}</p></div>`).join('');
 
-        // Q&A
-        document.getElementById('qa-container').innerHTML = qa.map(q => `<div class="glass-card p-6 border-l-4 border-navy"><h3 class="text-xl font-bold text-slate-900 mb-2">Q: ${q.title}</h3><div class="text-xs bg-slate-100 inline-block px-2 py-1 rounded text-slate-500 mb-3">${q.meta}</div><p class="text-slate-700 bg-slate-50 p-4 rounded-lg border border-slate-100"><strong>Answer:</strong> ${q.summary}</p></div>`).join('');
+        document.getElementById('qa-container').innerHTML = qa.map(q => `<div class="glass-card p-6 border-l-4 border-navy relative">
+          ${userRole === 'faculty' ? `<button onclick="deleteContent('qa', ${q.id})" class="absolute top-4 right-4 bg-rose-50 text-rose-500 p-2 rounded-lg hover:bg-rose-100 text-xs font-bold transition"><i class="fa-solid fa-trash mr-1"></i>Delete</button>` : ''}
+          <h3 class="text-xl font-bold text-slate-900 mb-2 pr-20">Q: ${q.title}</h3><div class="text-xs bg-slate-100 inline-block px-2 py-1 rounded text-slate-500 mb-3">${q.meta}</div><p class="text-slate-700 bg-slate-50 p-4 rounded-lg border border-slate-100"><strong>Answer:</strong> ${q.summary}</p></div>`).join('');
 
-        // Others
-        document.getElementById('cases-container').innerHTML = cases.map(c => `<div class="glass-card p-6 border-l-4 border-l-slate-800"><h3 class="text-xl font-serif font-bold text-slate-900 mb-2">${c.title}</h3><p class="text-[11px] font-bold text-slate-600 bg-slate-100 inline-block px-2 py-1 rounded uppercase mb-2"><i class="fa-solid fa-building-columns mr-1"></i> ${c.court}</p><p class="text-slate-600 text-sm">${c.summary}</p></div>`).join('');
-        document.getElementById('blogs-container').innerHTML = blogs.map(b => `<div class="glass-card p-5 border-t-4 border-t-blue-800 flex flex-col h-full"><span class="bg-blue-50 text-blue-800 text-[10px] font-bold px-2 py-1 rounded uppercase self-start">Article</span><h3 class="text-lg font-serif font-bold text-slate-900 mt-3 mb-1 line-clamp-2">${b.title}</h3><p class="text-xs text-slate-400 mb-3">By <span class="text-slate-700">${b.author}</span></p><p class="text-slate-600 text-sm line-clamp-3 mt-auto">${b.summary}</p></div>`).join('');
-        document.getElementById('notes-container').innerHTML = notes.map(n => `<div class="bg-white border border-slate-100 p-3 rounded-lg flex justify-between items-center hover:shadow-md transition cursor-pointer"><div><h3 class="font-bold text-slate-800 text-sm">${n.title}</h3><p class="text-[10px] text-slate-500 mt-1">${n.uploadedBy} | ${n.subject}</p></div><i class="fa-solid fa-download text-slate-300"></i></div>`).join('');
-        document.getElementById('jobs-container').innerHTML = jobs.map(j => `<div class="glass-card p-6 flex flex-col h-full border-t-4 border-t-emerald-500"><span class="bg-emerald-50 text-emerald-700 font-bold text-[10px] px-2 py-1 rounded self-start uppercase">${j.type}</span><h3 class="text-xl font-serif font-bold text-slate-900 mb-1 mt-3">${j.title}</h3><p class="text-slate-500 text-sm mb-4"><i class="fa-solid fa-building mr-1"></i>${j.company}</p><div class="mt-auto border-t border-slate-100 pt-4 flex justify-between items-center"><span class="font-bold text-slate-800">${j.salary}</span><button class="bg-slate-900 text-white px-4 py-1.5 rounded-lg text-xs font-bold">Apply</button></div></div>`).join('');
-        document.getElementById('webinar-content').innerHTML = webinars.map(w => `<div class="glass-card overflow-hidden"><div class="bg-navy h-32 flex items-center justify-center relative"><i class="fa-brands fa-youtube text-5xl text-white/20"></i><div class="absolute top-2 right-2 bg-rose-500 text-white text-[10px] font-bold px-2 py-1 rounded uppercase"><span class="animate-pulse mr-1">●</span>LIVE</div></div><div class="p-5"><h3 class="font-serif font-bold text-lg text-slate-900 mb-1">${w.title}</h3><p class="text-slate-500 text-sm mb-4"><i class="fa-solid fa-microphone-lines mr-1"></i>${w.speaker}</p><button class="w-full bg-slate-100 text-slate-900 font-bold py-2 rounded-lg text-sm hover:bg-slate-200">Join Session</button></div></div>`).join('');
+        document.getElementById('cases-container').innerHTML = cases.map(c => `<div class="glass-card p-6 border-l-4 border-l-slate-800 relative">
+          ${userRole === 'faculty' ? `<button onclick="deleteContent('cases', ${c.id})" class="absolute top-4 right-4 bg-rose-50 text-rose-500 p-2 rounded-lg hover:bg-rose-100 text-xs font-bold transition"><i class="fa-solid fa-trash mr-1"></i>Delete</button>` : ''}
+          <h3 class="text-xl font-serif font-bold text-slate-900 mb-2 pr-20">${c.title}</h3><p class="text-[11px] font-bold text-slate-600 bg-slate-100 inline-block px-2 py-1 rounded uppercase mb-2"><i class="fa-solid fa-building-columns mr-1"></i> ${c.court}</p><p class="text-slate-600 text-sm">${c.summary}</p></div>`).join('');
+        
+        document.getElementById('blogs-container').innerHTML = blogs.map(b => `<div class="glass-card p-5 border-t-4 border-t-blue-800 flex flex-col h-full relative">
+          ${userRole === 'faculty' ? `<button onclick="deleteContent('blogs', ${b.id})" class="absolute top-4 right-4 bg-rose-50 text-rose-500 p-2 rounded-lg hover:bg-rose-100 text-xs font-bold transition"><i class="fa-solid fa-trash mr-1"></i>Delete</button>` : ''}
+          <span class="bg-blue-50 text-blue-800 text-[10px] font-bold px-2 py-1 rounded uppercase self-start">Article</span><h3 class="text-lg font-serif font-bold text-slate-900 mt-3 mb-1 line-clamp-2 pr-20">${b.title}</h3><p class="text-xs text-slate-400 mb-3">By <span class="text-slate-700">${b.author}</span></p><p class="text-slate-600 text-sm line-clamp-3 mt-auto">${b.summary}</p></div>`).join('');
+        
+        document.getElementById('notes-container').innerHTML = notes.map(n => `<div class="bg-white border border-slate-100 p-3 rounded-lg flex justify-between items-center hover:shadow-md transition cursor-pointer relative">
+          <div><h3 class="font-bold text-slate-800 text-sm">${n.title}</h3><p class="text-[10px] text-slate-500 mt-1">${n.uploadedBy} | ${n.subject}</p></div><div class="flex items-center gap-2">
+          ${userRole === 'faculty' ? `<button onclick="deleteContent('notes', ${n.id})" class="text-rose-500 hover:text-rose-700 text-sm p-1 transition"><i class="fa-solid fa-trash"></i></button>` : ''}<i class="fa-solid fa-download text-slate-300"></i></div></div>`).join('');
+        
+        document.getElementById('jobs-container').innerHTML = jobs.map(j => `<div class="glass-card p-6 flex flex-col h-full border-t-4 border-t-emerald-500 relative">
+          ${userRole === 'faculty' ? `<button onclick="deleteContent('jobs', ${j.id})" class="absolute top-4 right-4 bg-rose-50 text-rose-500 p-2 rounded-lg hover:bg-rose-100 text-xs font-bold transition"><i class="fa-solid fa-trash mr-1"></i>Delete</button>` : ''}
+          <span class="bg-emerald-50 text-emerald-700 font-bold text-[10px] px-2 py-1 rounded self-start uppercase">${j.type}</span><h3 class="text-xl font-serif font-bold text-slate-900 mb-1 mt-3 pr-20">${j.title}</h3><p class="text-slate-500 text-sm mb-4"><i class="fa-solid fa-building mr-1"></i>${j.company}</p><div class="mt-auto border-t border-slate-100 pt-4 flex justify-between items-center"><span class="font-bold text-slate-800">${j.salary}</span><button class="bg-slate-900 text-white px-4 py-1.5 rounded-lg text-xs font-bold">Apply</button></div></div>`).join('');
+        
+        document.getElementById('webinar-content').innerHTML = webinars.map(w => `<div class="glass-card overflow-hidden relative">
+          ${userRole === 'faculty' ? `<button onclick="deleteContent('webinars', ${w.id})" class="absolute top-2 left-2 z-10 bg-rose-500 text-white p-2 rounded-lg hover:bg-rose-600 text-xs font-bold transition"><i class="fa-solid fa-trash mr-1"></i>Delete</button>` : ''}
+          <div class="bg-navy h-32 flex items-center justify-center relative"><i class="fa-brands fa-youtube text-5xl text-white/20"></i><div class="absolute top-2 right-2 bg-rose-500 text-white text-[10px] font-bold px-2 py-1 rounded uppercase"><span class="animate-pulse mr-1">●</span>LIVE</div></div><div class="p-5"><h3 class="font-serif font-bold text-lg text-slate-900 mb-1">${w.title}</h3><p class="text-slate-500 text-sm mb-4"><i class="fa-solid fa-microphone-lines mr-1"></i>${w.speaker}</p><button class="w-full bg-slate-100 text-slate-900 font-bold py-2 rounded-lg text-sm hover:bg-slate-200">Join Session</button></div></div>`).join('');
       } catch (err) { console.log("Backend offline."); }
     }
     loadData();
@@ -393,6 +400,25 @@
 
       const res = await fetch(`${BACKEND_URL}/api/upload`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type, data, code: facultyCodeUsed }) });
       if (res.ok) { alert("Published."); document.getElementById('upload-title').value = ''; document.getElementById('upload-meta').value = ''; document.getElementById('upload-desc').value = ''; loadData(); } else alert("Server Error.");
+    }
+
+    async function deleteContent(type, id) {
+      if (userRole !== 'faculty') return alert("Unauthorized access.");
+      if (!confirm("Are you sure you want to delete this content?")) return;
+
+      try {
+        const res = await fetch(`${BACKEND_URL}/api/delete/${type}/${id}`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: facultyCodeUsed })
+        });
+        if (res.ok) {
+          loadData(); 
+        } else {
+          const err = await res.json();
+          alert(`Error: ${err.error || "Failed to delete"}`);
+        }
+      } catch (err) { alert("Server error. Check your connection."); }
     }
 
     function broadcastQuiz() {
