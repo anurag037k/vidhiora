@@ -45,14 +45,14 @@
     @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
     #mobile-menu { transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out; max-height: 0; opacity: 0; overflow: hidden; }
-    #mobile-menu.open { max-height: 400px; opacity: 1; }
+    #mobile-menu.open { max-height: 500px; opacity: 1; }
   </style>
 </head>
 <body class="flex flex-col min-h-screen">
 
   <div class="h-1.5 w-full bg-gradient-to-r from-slate-900 via-[#d4af37] to-slate-900"></div>
 
-<!-- NAVBAR -->
+  <!-- NAVBAR -->
   <nav class="bg-white border-b border-slate-100 sticky top-0 z-50 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-20">
@@ -61,8 +61,11 @@
           <span class="font-serif font-bold text-3xl tracking-tight text-slate-900">Vidhiora</span>
         </div>
         
-        <div class="hidden md:flex space-x-7 items-center text-sm font-bold text-slate-600">
+        <div class="hidden lg:flex space-x-6 items-center text-sm font-bold text-slate-600">
           <button onclick="nav('home')" class="hover:text-amber-600 transition">Home</button>
+          <button onclick="nav('cases')" class="hover:text-amber-600 transition">Cases</button>
+          <button onclick="nav('blogs')" class="hover:text-amber-600 transition">Articles & Blogs</button>
+          <button onclick="nav('notes')" class="hover:text-amber-600 transition">Study Notes</button>
           <button onclick="nav('webinar')" class="hover:text-amber-600 transition">Webinars</button>
           <button onclick="nav('quiz')" class="hover:text-amber-600 transition">Live Quiz</button>
           <button onclick="nav('qa')" class="hover:text-amber-600 transition">Q&A</button>
@@ -75,33 +78,34 @@
             <span id="role-badge" class="hidden bg-rose-100 text-rose-700 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">Faculty</span>
             <img id="user-avatar" src="" class="w-10 h-10 rounded-full border-2 border-amber-200 shadow-sm hidden">
             <div class="flex flex-col text-left">
-              <!-- FIXED: Desktop Name is now a clickable button -->
               <button onclick="if(userRole === 'faculty') nav('admin');" id="user-name" class="text-xs font-bold text-slate-900 hover:text-amber-600 transition text-left cursor-pointer"></button>
               <button onclick="logout()" class="text-[10px] text-slate-400 hover:text-rose-600 text-left uppercase font-bold transition mt-0.5">Sign Out</button>
             </div>
           </div>
         </div>
 
-        <div class="md:hidden flex items-center">
+        <div class="lg:hidden flex items-center">
           <button onclick="toggleMobileMenu()" class="text-slate-900 p-2"><i class="fa-solid fa-bars text-2xl" id="mobile-menu-icon"></i></button>
         </div>
       </div>
     </div>
 
     <!-- Mobile Menu -->
-    <div id="mobile-menu" class="md:hidden bg-white border-b border-slate-100 px-4 pt-2 pb-4 space-y-2 shadow-lg absolute w-full">
-      <button onclick="nav('home'); toggleMobileMenu()" class="block w-full text-left px-4 py-3 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Home</button>
-      <button onclick="nav('webinar'); toggleMobileMenu()" class="block w-full text-left px-4 py-3 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Webinars</button>
-      <button onclick="nav('quiz'); toggleMobileMenu()" class="block w-full text-left px-4 py-3 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Live Quiz</button>
-      <button onclick="nav('qa'); toggleMobileMenu()" class="block w-full text-left px-4 py-3 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Q&A</button>
-      <button onclick="nav('jobs'); toggleMobileMenu()" class="block w-full text-left px-4 py-3 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Career</button>
+    <div id="mobile-menu" class="lg:hidden bg-white border-b border-slate-100 px-4 pt-2 pb-4 space-y-2 shadow-lg absolute w-full z-50">
+      <button onclick="nav('home'); toggleMobileMenu()" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Home</button>
+      <button onclick="nav('cases'); toggleMobileMenu()" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Landmark Cases</button>
+      <button onclick="nav('blogs'); toggleMobileMenu()" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Articles & Blogs</button>
+      <button onclick="nav('notes'); toggleMobileMenu()" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Study Notes</button>
+      <button onclick="nav('webinar'); toggleMobileMenu()" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Webinars</button>
+      <button onclick="nav('quiz'); toggleMobileMenu()" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Live Quiz</button>
+      <button onclick="nav('qa'); toggleMobileMenu()" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Q&A</button>
+      <button onclick="nav('jobs'); toggleMobileMenu()" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Career</button>
       
       <div id="mobile-auth-btn" class="pt-2">
         <button onclick="openAuthModal(); toggleMobileMenu()" class="w-full btn-gold font-bold py-3 rounded-xl shadow-lg text-slate-900">Sign In</button>
       </div>
       
       <div id="mobile-profile" class="hidden pt-2 border-t border-slate-100">
-        <!-- FIXED: Mobile Name is now a clickable button that routes to Admin -->
         <button onclick="if(userRole === 'faculty') { nav('admin'); toggleMobileMenu(); }" class="w-full text-left px-4 py-3 hover:bg-slate-50 rounded-lg transition flex items-center gap-2">
           <span id="mobile-user-name" class="font-bold text-slate-900 hover:text-amber-600 transition cursor-pointer"></span>
         </button>
@@ -124,7 +128,6 @@
             <p class="text-sm text-slate-500 mt-2">Log in to unlock features.</p>
           </div>
           <div class="flex justify-center border border-slate-200 p-4 rounded-xl bg-slate-50 shadow-inner">
-            <!-- PASTE YOUR GOOGLE CLIENT ID BELOW -->
             <div id="g_id_onload" data-client_id="356568812180-p3u8ttkv5nis5tv786mrf78aca83eib9.apps.googleusercontent.com" data-login_uri="" data-auto_prompt="false" data-callback="handleGoogleLogin"></div>
             <div class="g_id_signin" data-type="standard" data-theme="outline" data-size="large" data-text="sign_in_with"></div>
           </div>
@@ -156,7 +159,7 @@
 
   <main class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
 
-    <!-- PAGE: HOME -->
+    <!-- PAGE 1: HOME -->
     <section id="home" class="page active">
       <div class="hero-image-banner mb-10 w-full flex items-end justify-center pb-8">
         <button onclick="nav('webinar')" class="bg-white/10 backdrop-blur-md border border-white/30 text-white hover:bg-white hover:text-slate-900 px-8 py-3 rounded-full font-bold shadow-2xl transition duration-300">Explore Platform <i class="fa-solid fa-arrow-right ml-2"></i></button>
@@ -164,19 +167,24 @@
       
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
         <div class="lg:col-span-8 space-y-10">
-          
           <div class="space-y-4">
-            <div class="flex items-center gap-3 pb-2 border-b-2 border-slate-800">
-              <i class="fa-solid fa-gavel text-2xl text-slate-800"></i><h2 class="text-2xl font-serif font-bold text-slate-900">Landmark Cases</h2>
+            <div class="flex items-center justify-between pb-2 border-b-2 border-slate-800">
+              <div class="flex items-center gap-3">
+                <i class="fa-solid fa-gavel text-2xl text-slate-800"></i><h2 class="text-2xl font-serif font-bold text-slate-900">Recent Landmark Cases</h2>
+              </div>
+              <button onclick="nav('cases')" class="text-xs font-bold text-amber-600 hover:underline">View All <i class="fa-solid fa-angle-right ml-1"></i></button>
             </div>
-            <div id="cases-container" class="space-y-4"></div>
+            <div id="cases-container-preview" class="space-y-4"></div>
           </div>
 
           <div class="space-y-4">
-            <div class="flex items-center gap-3 pb-2 border-b-2 border-blue-800 mt-6">
-              <i class="fa-solid fa-pen-nib text-2xl text-blue-800"></i><h2 class="text-2xl font-serif font-bold text-slate-900">Legal Blog</h2>
+            <div class="flex items-center justify-between pb-2 border-b-2 border-blue-800 mt-6">
+              <div class="flex items-center gap-3">
+                <i class="fa-solid fa-pen-nib text-2xl text-blue-800"></i><h2 class="text-2xl font-serif font-bold text-slate-900">Featured Articles</h2>
+              </div>
+              <button onclick="nav('blogs')" class="text-xs font-bold text-blue-600 hover:underline">Read All <i class="fa-solid fa-angle-right ml-1"></i></button>
             </div>
-            <div id="blogs-container" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
+            <div id="blogs-container-preview" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
           </div>
         </div>
 
@@ -188,15 +196,48 @@
             </div>
 
             <div class="glass-card p-5">
-              <h3 class="font-bold text-slate-800 mb-4 flex items-center"><i class="fa-solid fa-book-open text-slate-500 mr-2"></i> Study Notes</h3>
-              <div id="notes-container" class="space-y-3 max-h-[350px] overflow-y-auto pr-2 pb-2 scrollbar-hide"></div>
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-slate-800 flex items-center"><i class="fa-solid fa-book-open text-slate-500 mr-2"></i> Quick Notes</h3>
+                <button onclick="nav('notes')" class="text-xs font-bold text-amber-600 hover:underline">Browse Repository</button>
+              </div>
+              <div id="notes-container-preview" class="space-y-3 max-h-[350px] overflow-y-auto pr-2 pb-2"></div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- PAGE: Q&A SECTION -->
+    <!-- PAGE 2: SEPARATE LANDMARK CASES PAGE -->
+    <section id="cases" class="page">
+      <div class="mb-10 text-center border-b border-slate-200 pb-8">
+        <span class="text-amber-600 font-bold uppercase tracking-widest text-xs">Legal Precedents</span>
+        <h2 class="text-4xl font-serif font-bold text-slate-900 mt-2">Landmark Cases & Judgments</h2>
+        <p class="text-slate-500 mt-2 max-w-2xl mx-auto text-sm">Comprehensive legal case briefs, Supreme Court ratios, and procedural analysis curated by legal scholars.</p>
+      </div>
+      <div id="cases-container" class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto"></div>
+    </section>
+
+    <!-- PAGE 3: SEPARATE ARTICLES & BLOGS PAGE -->
+    <section id="blogs" class="page">
+      <div class="mb-10 text-center border-b border-slate-200 pb-8">
+        <span class="text-blue-600 font-bold uppercase tracking-widest text-xs">Editorial Insights</span>
+        <h2 class="text-4xl font-serif font-bold text-slate-900 mt-2">Legal Blog & Scholarly Articles</h2>
+        <p class="text-slate-500 mt-2 max-w-2xl mx-auto text-sm">In-depth perspectives on emerging jurisprudence, legal tech innovations, and constitutional debates.</p>
+      </div>
+      <div id="blogs-container" class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto"></div>
+    </section>
+
+    <!-- PAGE 4: SEPARATE STUDY NOTES REPOSITORY PAGE -->
+    <section id="notes" class="page">
+      <div class="mb-10 text-center border-b border-slate-200 pb-8">
+        <span class="text-emerald-600 font-bold uppercase tracking-widest text-xs">Academic Vault</span>
+        <h2 class="text-4xl font-serif font-bold text-slate-900 mt-2">Study Notes & Course Resources</h2>
+        <p class="text-slate-500 mt-2 max-w-2xl mx-auto text-sm">Download unit notes, constitutional outlines, statutory summaries, and revision guides.</p>
+      </div>
+      <div id="notes-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto"></div>
+    </section>
+
+    <!-- PAGE 5: Q&A SECTION -->
     <section id="qa" class="page">
       <div class="mb-10 md:text-center border-b border-slate-200 pb-6">
         <span class="text-blue-600 font-bold uppercase tracking-widest text-xs">Knowledge Base</span>
@@ -205,25 +246,20 @@
       <div id="qa-container" class="max-w-4xl mx-auto space-y-4"></div>
     </section>
 
-    <!-- PAGE: WEBINARS -->
+    <!-- PAGE 6: WEBINARS -->
     <section id="webinar" class="page">
       <div class="mb-10 md:text-center border-b border-slate-200 pb-6">
         <h2 class="text-4xl font-serif font-bold text-slate-900 mt-2">Premium Webinars</h2>
       </div>
       
-      <!-- Locked State -->
       <div id="webinar-lock" class="glass-card p-12 text-center max-w-xl mx-auto border-t-4 border-t-navy">
         <i class="fa-solid fa-lock text-5xl text-slate-300 mb-6"></i>
         <h3 class="text-2xl font-serif font-bold text-slate-800 mb-3">Login Required</h3>
         <button onclick="openAuthModal()" class="btn-gold text-slate-900 px-8 py-3 rounded-full mt-2 font-bold">Sign In to Unlock</button>
       </div>
 
-      <!-- Unlocked State -->
       <div id="webinar-content" class="hidden space-y-12">
-        
-        <!-- TOP: LIVE WEBINAR PLAYER -->
         <div class="glass-card overflow-hidden border-t-4 border-rose-500 shadow-2xl max-w-5xl mx-auto">
-          <!-- Player Header -->
           <div class="bg-navy p-4 flex justify-between items-center border-b border-slate-800">
             <div class="flex items-center gap-3">
               <span class="flex h-3 w-3 relative">
@@ -237,25 +273,17 @@
             </span>
           </div>
           
-          <!-- Video Container (Replaced with Google Meet Portal) -->
-<div class="aspect-video bg-slate-900 relative flex flex-col items-center justify-center group p-6 text-center border-b border-slate-800">
-  
-  <!-- Google Meet Icon -->
-  <div class="h-20 w-20 bg-white rounded-full flex items-center justify-center mb-4 shadow-lg shadow-blue-900/20">
-    <img src="googlemeet.webp" alt="Google Meet" class="h-10 w-10">
-  </div>
-  
-  <h3 class="text-2xl font-serif font-bold text-white mb-2">Class is Live on Google Meet</h3>
-  <p class="text-slate-400 mb-6 max-w-md">Click below to join the interactive session. Please keep your microphone muted upon entry.</p>
-  
-  <!-- REPLACE THE HREF LINK BELOW WITH YOUR ACTUAL GOOGLE MEET LINK -->
-  <a href="https://meet.google.com/YOUR-MEETING-LINK" target="_blank" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-full transition shadow-lg shadow-blue-600/30 flex items-center gap-2">
-    <i class="fa-solid fa-video"></i> Join Live Meeting
-  </a>
-
-</div>
+          <div class="aspect-video bg-slate-900 relative flex flex-col items-center justify-center group p-6 text-center border-b border-slate-800">
+            <div class="h-20 w-20 bg-white rounded-full flex items-center justify-center mb-4 shadow-lg shadow-blue-900/20">
+              <img src="googlemeet.webp" alt="Google Meet" class="h-10 w-10">
+            </div>
+            <h3 class="text-2xl font-serif font-bold text-white mb-2">Class is Live on Google Meet</h3>
+            <p class="text-slate-400 mb-6 max-w-md">Click below to join the interactive session. Please keep your microphone muted upon entry.</p>
+            <a href="https://meet.google.com/YOUR-MEETING-LINK" target="_blank" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-full transition shadow-lg shadow-blue-600/30 flex items-center gap-2">
+              <i class="fa-solid fa-video"></i> Join Live Meeting
+            </a>
+          </div>
           
-          <!-- Player Footer & Actions -->
           <div class="p-6 md:p-8 bg-white flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div>
               <span class="text-xs font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-2 py-1 rounded">Today's Masterclass</span>
@@ -273,20 +301,17 @@
           </div>
         </div>
 
-        <!-- BOTTOM: RECORDED/UPCOMING GRID -->
         <div>
           <div class="flex items-center gap-3 mb-6 border-b border-slate-200 pb-4">
             <i class="fa-solid fa-video text-2xl text-slate-800"></i>
             <h2 class="text-2xl font-serif font-bold text-slate-900">Upcoming & Recorded Sessions</h2>
           </div>
-          <!-- JS injects webinar cards here -->
           <div id="webinar-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
         </div>
-
       </div>
     </section>
 
-    <!-- PAGE: QUIZ -->
+    <!-- PAGE 7: QUIZ -->
     <section id="quiz" class="page">
       <div class="mb-10 md:text-center border-b border-slate-200 pb-6">
         <h2 class="text-4xl font-serif font-bold text-slate-900 mt-2">Live Quiz Arena</h2>
@@ -305,7 +330,7 @@
       </div>
     </section>
 
-    <!-- PAGE: JOBS -->
+    <!-- PAGE 8: JOBS -->
     <section id="jobs" class="page">
       <div class="mb-10 md:text-center border-b border-slate-200 pb-6">
         <h2 class="text-4xl font-serif font-bold text-slate-900 mt-2">Career Portal</h2>
@@ -313,7 +338,7 @@
       <div id="jobs-container" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
     </section>
 
-    <!-- PAGE: ADMIN DASHBOARD -->
+    <!-- PAGE 9: ADMIN DASHBOARD -->
     <section id="admin" class="page">
       <div class="bg-navy rounded-[2rem] p-10 mb-10 text-white shadow-2xl relative overflow-hidden">
         <h2 class="text-3xl md:text-4xl font-serif font-bold"><i class="fa-solid fa-server mr-4 text-amber-400"></i>Faculty & Admin Control Center</h2>
@@ -351,7 +376,6 @@
         </div>
       </div>
 
-      <!-- CENTRAL ADMIN MANAGEMENT TABLE -->
       <div class="glass-card p-8 bg-white border-t-4 border-t-rose-500">
         <h3 class="font-serif font-bold text-2xl mb-6 text-slate-800 flex items-center justify-between">
           <span><i class="fa-solid fa-trash-can text-rose-500 mr-2"></i> Content Deletion Manager</span>
@@ -367,7 +391,6 @@
               </tr>
             </thead>
             <tbody id="admin-management-table" class="text-sm divide-y divide-slate-100">
-              <!-- Populated dynamically via JS -->
             </tbody>
           </table>
         </div>
@@ -381,7 +404,7 @@
     </div>
   </footer>
 
-  <!-- PROFESSIONAL TOAST NOTIFICATION CONTAINER -->
+  <!-- TOAST CONTAINER -->
   <div id="toast-notification" class="fixed bottom-6 right-6 z-[200] transform translate-y-20 opacity-0 transition-all duration-300 ease-in-out pointer-events-none" role="status" aria-live="polite">
     <div class="bg-slate-900 text-white px-6 py-4 rounded-xl shadow-2xl border border-slate-800 flex items-center gap-3">
       <div id="toast-icon" class="text-amber-400 text-lg">
@@ -391,7 +414,7 @@
     </div>
   </div>
 
-  <!-- CUSTOM CONFIRM MODAL -->
+  <!-- CONFIRM MODAL -->
   <div id="confirm-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden z-[250] flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
     <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl p-6 transform scale-95 transition-transform duration-300" id="confirm-modal-content">
       <div class="text-center">
@@ -411,13 +434,11 @@
   <script>
     const BACKEND_URL = "https://vidhiora-5m6s.onrender.com"; 
     const socket = io(BACKEND_URL);
-    let userRole = 'guest', currentQuiz = null, facultyCodeUsed = '';
+    let userRole = 'guest', currentQuiz = null, facultyCodeUsed = '', currentUser = null;
     
-    // Deletion state variables
     let pendingDeleteType = null;
     let pendingDeleteId = null;
 
-    // Toast logic
     let toastTimer = null;
     function showToast(message, type = 'success') {
       const toast = document.getElementById('toast-notification');
@@ -446,9 +467,11 @@
     function nav(pageId) {
       if(pageId === 'admin' && userRole !== 'faculty') return openAuthModal('faculty');
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById(pageId).classList.add('active');
+      const activePage = document.getElementById(pageId);
+      if(activePage) activePage.classList.add('active');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
     function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }
     
     function openAuthModal(defaultTab = 'student') {
@@ -474,7 +497,6 @@
       }
     }
 
-    // Custom Confirm Modal Logic
     function showConfirmModal(type, id) {
       if (userRole !== 'faculty') {
         showToast("Unauthorized access.", "error");
@@ -506,7 +528,11 @@
     
     function handleGoogleLogin(response) {
       const data = parseJwt(response.credential);
-      userRole = 'student'; updateUI(data.name, data.picture); closeAuthModal(); loadData();
+      currentUser = data; 
+      userRole = 'student'; 
+      updateUI(data.name, data.picture); 
+      closeAuthModal(); 
+      loadData();
     }
     
     function handleFacultyLogin() {
@@ -530,7 +556,10 @@
     }
     
     function logout() {
-      userRole = 'guest'; facultyCodeUsed = '';
+      userRole = 'guest'; 
+      facultyCodeUsed = '';
+      currentUser = null; 
+      
       document.getElementById('desktop-auth').classList.remove('hidden'); document.getElementById('desktop-profile').classList.add('hidden');
       document.getElementById('role-badge').classList.add('hidden'); document.getElementById('user-avatar').classList.add('hidden');
       document.getElementById('mobile-auth-btn').classList.remove('hidden'); document.getElementById('mobile-profile').classList.add('hidden');
@@ -555,23 +584,30 @@
         document.getElementById('qa-container').innerHTML = qa.map(q => `<div class="glass-card p-6 border-l-4 border-navy relative">
           <h3 class="text-xl font-bold text-slate-900 mb-2">Q: ${q.title}</h3><div class="text-xs bg-slate-100 inline-block px-2 py-1 rounded text-slate-500 mb-3">${q.meta}</div><p class="text-slate-700 bg-slate-50 p-4 rounded-lg border border-slate-100"><strong>Answer:</strong> ${q.summary}</p></div>`).join('');
 
-        document.getElementById('cases-container').innerHTML = cases.map(c => `<div class="glass-card p-6 border-l-4 border-l-slate-800 relative">
+        // Populate Landmark Cases (Home Preview + Dedicated Page)
+        const casesHTML = cases.map(c => `<div class="glass-card p-6 border-l-4 border-l-slate-800 relative">
           <h3 class="text-xl font-serif font-bold text-slate-900 mb-2">${c.title}</h3><p class="text-[11px] font-bold text-slate-600 bg-slate-100 inline-block px-2 py-1 rounded uppercase mb-2"><i class="fa-solid fa-building-columns mr-1"></i> ${c.court}</p><p class="text-slate-600 text-sm">${c.summary}</p></div>`).join('');
+        document.getElementById('cases-container-preview').innerHTML = casesHTML;
+        document.getElementById('cases-container').innerHTML = casesHTML;
         
-        document.getElementById('blogs-container').innerHTML = blogs.map(b => `<div class="glass-card p-5 border-t-4 border-t-blue-800 flex flex-col h-full relative">
+        // Populate Articles & Blogs (Home Preview + Dedicated Page)
+        const blogsHTML = blogs.map(b => `<div class="glass-card p-5 border-t-4 border-t-blue-800 flex flex-col h-full relative">
           <span class="bg-blue-50 text-blue-800 text-[10px] font-bold px-2 py-1 rounded uppercase self-start">Article</span><h3 class="text-lg font-serif font-bold text-slate-900 mt-3 mb-1 line-clamp-2">${b.title}</h3><p class="text-xs text-slate-400 mb-3">By <span class="text-slate-700">${b.author}</span></p><p class="text-slate-600 text-sm line-clamp-3 mt-auto">${b.summary}</p></div>`).join('');
+        document.getElementById('blogs-container-preview').innerHTML = blogsHTML;
+        document.getElementById('blogs-container').innerHTML = blogsHTML;
         
-        document.getElementById('notes-container').innerHTML = notes.map(n => `<div class="bg-white border border-slate-100 p-3 rounded-lg flex justify-between items-center hover:shadow-md transition cursor-pointer relative">
-          <div><h3 class="font-bold text-slate-800 text-sm">${n.title}</h3><p class="text-[10px] text-slate-500 mt-1">${n.uploadedBy} | ${n.subject}</p></div><i class="fa-solid fa-download text-slate-300"></i></div>`).join('');
+        // Populate Study Notes (Home Preview + Dedicated Page)
+        const notesHTML = notes.map(n => `<div class="bg-white border border-slate-200 p-4 rounded-xl flex justify-between items-center hover:shadow-md transition cursor-pointer relative glass-card">
+          <div><span class="text-[10px] font-bold uppercase text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">${n.subject}</span><h3 class="font-bold text-slate-800 text-sm mt-1">${n.title}</h3><p class="text-[10px] text-slate-500 mt-0.5">Uploaded by: ${n.uploadedBy}</p></div><i class="fa-solid fa-file-arrow-down text-xl text-slate-400 hover:text-emerald-600 transition"></i></div>`).join('');
+        document.getElementById('notes-container-preview').innerHTML = notesHTML;
+        document.getElementById('notes-container').innerHTML = notesHTML;
         
         document.getElementById('jobs-container').innerHTML = jobs.map(j => `<div class="glass-card p-6 flex flex-col h-full border-t-4 border-t-emerald-500 relative">
           <span class="bg-emerald-50 text-emerald-700 font-bold text-[10px] px-2 py-1 rounded self-start uppercase">${j.type}</span><h3 class="text-xl font-serif font-bold text-slate-900 mb-1 mt-3">${j.title}</h3><p class="text-slate-500 text-sm mb-4"><i class="fa-solid fa-building mr-1"></i>${j.company}</p><div class="mt-auto border-t border-slate-100 pt-4 flex justify-between items-center"><span class="font-bold text-slate-800">${j.salary}</span><button class="bg-slate-900 text-white px-4 py-1.5 rounded-lg text-xs font-bold">Apply</button></div></div>`).join('');
         
-        // Changed destination to #webinar-grid
         document.getElementById('webinar-grid').innerHTML = webinars.map(w => `<div class="glass-card overflow-hidden relative border border-slate-100">
           <div class="bg-slate-800 h-32 flex items-center justify-center relative"><i class="fa-solid fa-play text-4xl text-white/30"></i><div class="absolute top-2 right-2 bg-slate-600 text-white text-[10px] font-bold px-2 py-1 rounded uppercase">RECORDED</div></div><div class="p-5"><h3 class="font-serif font-bold text-lg text-slate-900 mb-1">${w.title}</h3><p class="text-slate-500 text-sm mb-4"><i class="fa-solid fa-microphone-lines mr-1"></i>${w.speaker}</p><button class="w-full bg-slate-100 text-slate-900 font-bold py-2 rounded-lg text-sm hover:bg-slate-200">Watch Replay</button></div></div>`).join('');
 
-        // Populate Central Admin Deletion Table
         if (userRole === 'faculty') {
           let allRows = '';
           const formatRows = (items, typeName) => items.map(item => `
@@ -628,7 +664,6 @@
       }
     }
 
-    // New Delete execution fired from the Custom Confirm Modal
     async function executeDelete() {
       if (!pendingDeleteType || !pendingDeleteId) return;
 
@@ -671,45 +706,38 @@
       document.getElementById('q-ans').value = '';
     }
 
-   // State variable for the currently selected option
     let selectedQuizOption = null;
 
     socket.on('student_receive_question', (q) => {
       currentQuiz = q; 
-      selectedQuizOption = null; // Reset selection for a new question
+      selectedQuizOption = null;
       
       document.getElementById('waiting-msg').style.display = 'none'; 
       document.getElementById('question-card').style.display = 'block'; 
       document.getElementById('question-text').innerText = q.question;
       
-      // 1. Generate selectable options
       const optionsHTML = q.options.map((opt, index) => 
         `<button id="quiz-opt-${index}" class="quiz-option-btn w-full text-left p-4 border-2 border-slate-100 rounded-xl hover:border-blue-500 hover:bg-blue-50 font-bold text-slate-700 transition" onclick="selectQuizOption('${opt}', ${index})">${opt}</button>`
       ).join('');
       
-      // 2. Add the final Submit button underneath
       const submitButtonHTML = `<button onclick="confirmQuizSubmit()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl mt-6 transition shadow-lg"><i class="fa-solid fa-paper-plane mr-2"></i> Submit Answer</button>`;
       
       document.getElementById('options-container').innerHTML = optionsHTML + submitButtonHTML;
     });
 
-    // Helper function to visually highlight the selected option
     function selectQuizOption(opt, index) {
       selectedQuizOption = opt;
       
-      // Remove highlight from all options
       document.querySelectorAll('.quiz-option-btn').forEach(btn => {
         btn.classList.remove('border-blue-500', 'bg-blue-100', 'ring-2', 'ring-blue-300');
         btn.classList.add('border-slate-100');
       });
       
-      // Add highlight to the specific clicked option
       const selectedBtn = document.getElementById(`quiz-opt-${index}`);
       selectedBtn.classList.remove('border-slate-100');
       selectedBtn.classList.add('border-blue-500', 'bg-blue-100', 'ring-2', 'ring-blue-300');
     }
 
-    // Helper function to validate before submitting
     function confirmQuizSubmit() {
       if (!selectedQuizOption) {
         showToast("Please select an answer before submitting.", "warning");
@@ -720,11 +748,9 @@
         return;
       }
       
-      // If validation passes, run the actual submission
       submitAnswer(selectedQuizOption);
     }
 
-    // The actual backend submission logic
     function submitAnswer(opt) {
       socket.emit('student_submit_answer', { 
         email: currentUser.email, 
@@ -740,7 +766,6 @@
     socket.on('update_leaderboard', (list) => {
       document.getElementById('leaderboard').innerHTML = list.map((u, i) => `<div class="flex justify-between items-center py-2 border-b border-slate-800 last:border-0"><div class="flex items-center gap-2"><div class="${i < 3 ? 'text-amber-400' : 'text-slate-500'} font-bold">${i+1}</div><span class="font-bold text-sm">${u.name}</span></div><span class="font-bold text-amber-400">${u.score}</span></div>`).join('');
     });
-
   </script>
 </body>
 </html>
