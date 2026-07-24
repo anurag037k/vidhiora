@@ -436,17 +436,21 @@
           </div>
         </div>
 
+<!-- Live Quiz Admin Panel -->
         <div class="glass-card p-8 border-t-4 border-t-amber-500 bg-white">
           <h3 class="font-serif font-bold text-2xl mb-6 text-slate-800"><i class="fa-solid fa-tower-broadcast text-amber-500 mr-2"></i> Live Quiz</h3>
           <div class="space-y-4">
             <input type="text" id="q-text" placeholder="Question Text" class="w-full p-3.5 border rounded-xl font-medium">
-            <input type="text" id="q-opt1" placeholder="Option A" class="w-full p-3.5 border rounded-xl">
-            <input type="text" id="q-opt2" placeholder="Option B" class="w-full p-3.5 border rounded-xl">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <input type="text" id="q-opt1" placeholder="Option A" class="w-full p-3 border rounded-xl">
+              <input type="text" id="q-opt2" placeholder="Option B" class="w-full p-3 border rounded-xl">
+              <input type="text" id="q-opt3" placeholder="Option C" class="w-full p-3 border rounded-xl">
+              <input type="text" id="q-opt4" placeholder="Option D" class="w-full p-3 border rounded-xl">
+            </div>
             <input type="text" id="q-ans" placeholder="Correct Answer (Exact Match)" class="w-full p-3.5 border-2 border-emerald-300 rounded-xl bg-emerald-50 font-bold">
             <button onclick="broadcastQuiz()" class="w-full bg-slate-900 text-white font-bold py-4 rounded-xl mt-2 hover:bg-slate-800">Broadcast Now</button>
           </div>
         </div>
-      </div>
 
       <div class="glass-card p-8 bg-white border-t-4 border-t-rose-500">
         <h3 class="font-serif font-bold text-2xl mb-6 text-slate-800 flex items-center justify-between">
@@ -824,22 +828,37 @@
         closeConfirmModal();
       }
     }
-
-    function broadcastQuiz() {
+function broadcastQuiz() {
       if (userRole !== 'faculty') return;
-      const q = document.getElementById('q-text').value, o1 = document.getElementById('q-opt1').value, o2 = document.getElementById('q-opt2').value, ans = document.getElementById('q-ans').value;
       
-      if (!q || !o1 || !o2 || !ans) {
-        showToast("Fill all fields.", "warning");
+      const q = document.getElementById('q-text').value;
+      const o1 = document.getElementById('q-opt1').value;
+      const o2 = document.getElementById('q-opt2').value;
+      const o3 = document.getElementById('q-opt3').value;
+      const o4 = document.getElementById('q-opt4').value;
+      const ans = document.getElementById('q-ans').value;
+      
+      if (!q || !o1 || !o2 || !o3 || !o4 || !ans) {
+        showToast("Fill all fields including all 4 options.", "warning");
         return;
       }
       
-      socket.emit('faculty_start_quiz', { code: facultyCodeUsed, questionData: { question: q, options: [o1, o2], correctAnswer: ans } });
+      socket.emit('faculty_start_quiz', { 
+        code: facultyCodeUsed, 
+        questionData: { 
+          question: q, 
+          options: [o1, o2, o3, o4], 
+          correctAnswer: ans 
+        } 
+      });
+      
       showToast("Broadcast Sent.", "success"); 
       
       document.getElementById('q-text').value = ''; 
       document.getElementById('q-opt1').value = ''; 
       document.getElementById('q-opt2').value = ''; 
+      document.getElementById('q-opt3').value = ''; 
+      document.getElementById('q-opt4').value = ''; 
       document.getElementById('q-ans').value = '';
     }
 
@@ -903,7 +922,7 @@
     socket.on('update_leaderboard', (list) => {
       document.getElementById('leaderboard').innerHTML = list.map((u, i) => `<div class="flex justify-between items-center py-2 border-b border-slate-800 last:border-0"><div class="flex items-center gap-2"><div class="${i < 3 ? 'text-amber-400' : 'text-slate-500'} font-bold">${i+1}</div><span class="font-bold text-sm">${u.name}</span></div><span class="font-bold text-amber-400">${u.score}</span></div>`).join('');
     });
-    
+
   </script>
 </body>
 </html>
