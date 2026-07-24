@@ -24,7 +24,7 @@ app.get('/', (req, res) => res.send('Vidhiora Pro API is Live!'));
 let content = {
   cases: [{ id: 1, title: "State of Maharashtra v. XYZ", court: "Supreme Court", summary: "Landmark judgment redefining procedural thresholds for anticipatory bail." }],
   blogs: [{ id: 1, title: "The Future of AI in Legal Tech", author: "Adv. Sharma", summary: "How artificial intelligence is changing contract drafting and review." }],
-  notes: [{ id: 1, subject: "Constitution", title: "Fundamental Rights (Art 12-35)", uploadedBy: "Admin" }],
+  notes: [{ id: 1, subject: "Constitution", title: "Fundamental Rights (Art 12-35)", uploadedBy: "Admin", fileUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" }],
   jobs: [{ id: 1, title: "Legal Advisor", company: "TechLaw Solutions", salary: "₹50,000/mo", type: "Full-Time" }],
   webinars: [{ id: 1, title: "Drafting Corporate Contracts", speaker: "Adv. Mehra", date: "Oct 25, 2026" }],
   announcements: [{ id: 1, title: "Orientation Webinar 2026", meta: "August 15, 2026 | 10:00 AM", summary: "Mandatory orientation for all new first-year students." }],
@@ -48,7 +48,7 @@ app.get('/api/:type', (req, res) => {
   else res.status(404).json({ error: "Not found" });
 });
 
-// Upload Content Endpoint
+// Upload Content Endpoint (Supports fileUrl for PDFs automatically)
 app.post('/api/upload', (req, res) => {
   const { type, data, code } = req.body;
   if (!validFacultyCodes.includes(code)) return res.status(403).json({ error: "Unauthorized Code" });
