@@ -68,6 +68,7 @@
           <button onclick="nav('notes')" class="hover:text-amber-600 transition">Study Notes</button>
           <button onclick="nav('webinar')" class="hover:text-amber-600 transition">Webinars</button>
           <button onclick="nav('quiz')" class="hover:text-amber-600 transition">Live Quiz</button>
+          <button onclick="nav('contact')" class="hover:text-amber-600 transition">Contact</button>
           <button onclick="nav('qa')" class="hover:text-amber-600 transition">Q&A</button>
           <button onclick="nav('jobs')" class="hover:text-amber-600 transition">Career</button>
           
@@ -98,6 +99,7 @@
       <button onclick="nav('notes')" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Study Notes</button>
       <button onclick="nav('webinar')" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Webinars</button>
       <button onclick="nav('quiz')" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Live Quiz</button>
+      <button onclick="nav('contact')" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Contact</button>
       <button onclick="nav('qa')" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Q&A</button>
       <button onclick="nav('jobs')" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Career</button>
       
@@ -366,7 +368,18 @@
         </div>
       </div>
     </section>
+<!-- PAGE: CONTACT US -->
+    <section id="contact" class="page">
+      <div class="mb-8 text-center border-b border-slate-200 pb-6">
+        <span class="text-amber-600 font-bold uppercase tracking-widest text-xs">Get In Touch</span>
+        <h2 class="text-4xl font-serif font-bold text-slate-900 mt-2">Contact Us</h2>
+        <p class="text-slate-500 mt-2 max-w-xl mx-auto text-sm">Send a message directly to our inbox and we will reply to your email.</p>
+      </div>
 
+      <div class="max-w-3xl mx-auto glass-card p-4 md:p-6 border-t-4 border-amber-500 bg-white">
+        <!-- TYPEFORM EMBED -->
+        <div data-tf-live="01KY9JQ8SFVHRWY2MVQAWVX2PG"></div><script src="//embed.typeform.com/next/embed.js"></script>
+    </section>
     <!-- PAGE 8: JOBS -->
     <section id="jobs" class="page">
       <div class="mb-10 md:text-center border-b border-slate-200 pb-6">
@@ -830,6 +843,41 @@
     socket.on('update_leaderboard', (list) => {
       document.getElementById('leaderboard').innerHTML = list.map((u, i) => `<div class="flex justify-between items-center py-2 border-b border-slate-800 last:border-0"><div class="flex items-center gap-2"><div class="${i < 3 ? 'text-amber-400' : 'text-slate-500'} font-bold">${i+1}</div><span class="font-bold text-sm">${u.name}</span></div><span class="font-bold text-amber-400">${u.score}</span></div>`).join('');
     });
+    async function handleContactSubmit(event) {
+      event.preventDefault();
+      
+      const submitBtn = document.getElementById('contact-submit-btn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+
+      const name = document.getElementById('contact-name').value;
+      const email = document.getElementById('contact-email').value;
+      const subject = document.getElementById('contact-subject').value;
+      const message = document.getElementById('contact-message').value;
+
+      // REPLACE 'YOUR_FORMSPREE_ID' WITH YOUR FORMSPREE ENDPOINT KEY
+      const FORMSPREE_ENDPOINT = "https://formspree.io/f/YOUR_FORMSPREE_ID";
+
+      try {
+        const response = await fetch(FORMSPREE_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ name, email, subject, message })
+        });
+
+        if (response.ok) {
+          showToast("Message sent! We will reply to your email soon.", "success");
+          document.getElementById('contact-form').reset();
+        } else {
+          showToast("Failed to send message. Please try again.", "error");
+        }
+      } catch (err) {
+        showToast("Network error. Please check your connection.", "error");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Message';
+      }
+    }
   </script>
 </body>
 </html>
