@@ -90,9 +90,9 @@
       </div>
     </div>
 
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="lg:hidden bg-white border-b border-slate-100 px-4 pt-2 pb-4 space-y-2 shadow-lg absolute w-full z-50">
-   <button onclick="nav('home')" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Home</button>
+<!-- Mobile Menu -->
+    <div id="mobile-menu" class="lg:hidden bg-white border-b border-slate-100 px-4 pt-2 pb-6 space-y-2 shadow-xl absolute w-full z-50 max-h-[85vh] overflow-y-auto">
+      <button onclick="nav('home')" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Home</button>
       <button onclick="nav('cases')" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Landmark Cases</button>
       <button onclick="nav('blogs')" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Articles & Blogs</button>
       <button onclick="nav('notes')" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Study Notes</button>
@@ -102,14 +102,21 @@
       <button onclick="nav('jobs')" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Career</button>
       
       <div id="mobile-auth-btn" class="pt-2">
-        <button onclick="openAuthModal(); toggleMobileMenu()" class="w-full btn-gold font-bold py-3 rounded-xl shadow-lg text-slate-900">Sign In</button>
+        <button onclick="openAuthModal()" class="w-full btn-gold font-bold py-3 rounded-xl shadow-lg text-slate-900">Sign In</button>
       </div>
       
-      <div id="mobile-profile" class="hidden pt-2 border-t border-slate-100">
-        <button onclick="if(userRole === 'faculty') { nav('admin'); toggleMobileMenu(); }" class="w-full text-left px-4 py-3 hover:bg-slate-50 rounded-lg transition flex items-center gap-2">
-          <span id="mobile-user-name" class="font-bold text-slate-900 hover:text-amber-600 transition cursor-pointer"></span>
+      <div id="mobile-profile" class="hidden pt-3 mt-2 border-t border-slate-100 space-y-2">
+        <button onclick="handleMobileProfileClick()" class="w-full text-left p-3 bg-amber-50/60 hover:bg-amber-100/60 border border-amber-200/50 rounded-xl transition flex items-center justify-between group cursor-pointer">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-circle-user text-amber-600 text-lg"></i>
+            <span id="mobile-user-name" class="font-bold text-slate-900 group-hover:text-amber-700 transition"></span>
+          </div>
+          <i class="fa-solid fa-chevron-right text-xs text-amber-500"></i>
         </button>
-        <button onclick="logout(); toggleMobileMenu()" class="w-full text-left px-4 py-3 font-bold text-rose-600 hover:bg-rose-50 rounded-lg transition">Sign Out</button>
+
+        <button onclick="logout()" class="w-full text-left px-4 py-3 font-bold text-rose-600 hover:bg-rose-50 rounded-xl transition flex items-center gap-2 border border-rose-100 bg-rose-50/30">
+          <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+        </button>
       </div>
     </div>
   </nav>
@@ -600,7 +607,14 @@
       document.getElementById('webinar-lock').style.display = 'none'; document.getElementById('webinar-content').classList.remove('hidden');
       document.getElementById('quiz-lock').style.display = 'none'; document.getElementById('quiz-content').classList.remove('hidden');
     }
-    
+    function handleMobileProfileClick() {
+      if (userRole === 'faculty') {
+        nav('admin');
+      } else {
+        const name = (currentUser && currentUser.name) ? currentUser.name : 'Student';
+        showToast(`Logged in as ${name}`, 'success');
+      }
+    }
     function logout() {
       userRole = 'guest'; 
       facultyCodeUsed = '';
