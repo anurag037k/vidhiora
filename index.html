@@ -105,21 +105,24 @@
         <button onclick="openAuthModal()" class="w-full btn-gold font-bold py-3 rounded-xl shadow-lg text-slate-900">Sign In</button>
       </div>
       
-    <div id="mobile-profile" class="hidden pt-3 mt-2 border-t border-slate-100 space-y-3">
-        <button onclick="handleMobileProfileClick()" class="w-full text-left p-3 bg-amber-50/60 hover:bg-amber-100/60 border border-amber-200/50 rounded-xl transition flex items-center justify-between group cursor-pointer">
-          <div class="flex items-center gap-2">
-            <i class="fa-solid fa-circle-user text-amber-600 text-lg"></i>
-            <span id="mobile-user-name" class="font-bold text-slate-900 group-hover:text-amber-700 transition"></span>
+<!-- MOBILE PROFILE CARD WITH INTEGRATED SIGN OUT BUTTON -->
+      <div id="mobile-profile" class="hidden pt-3 mt-2 border-t border-slate-100">
+        <div class="w-full p-3 bg-amber-50/80 border border-amber-200/80 rounded-xl flex items-center justify-between">
+          
+          <!-- Left: User Name -->
+          <div class="flex items-center gap-2.5 overflow-hidden">
+            <i class="fa-solid fa-circle-user text-amber-600 text-xl flex-shrink-0"></i>
+            <span id="mobile-user-name" class="font-bold text-slate-900 truncate text-sm"></span>
           </div>
-          <i class="fa-solid fa-chevron-right text-xs text-amber-500"></i>
-        </button>
 
-        <!-- Redesigned Sign Out Button -->
-        <button onclick="logout()" class="w-full text-left px-4 py-3 font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 rounded-xl transition flex items-center gap-2 border border-rose-200 shadow-sm cursor-pointer mb-6">
-          <i class="fa-solid fa-right-from-bracket"></i> Sign Out
-        </button>
+          <!-- Right: Sign Out Button -->
+          <button onclick="logout()" class="flex-shrink-0 bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition shadow-sm flex items-center gap-1.5">
+            <i class="fa-solid fa-right-from-bracket text-[10px]"></i>
+            <span>Sign Out</span>
+          </button>
+
+        </div>
       </div>
-    </div>
   </nav>
 
   <!-- AUTH MODAL -->
