@@ -91,7 +91,7 @@
     </div>
 
 <!-- Mobile Menu -->
-    <div id="mobile-menu" class="lg:hidden bg-white border-b border-slate-100 px-4 pt-2 pb-6 space-y-2 shadow-xl absolute w-full z-50 max-h-[85vh] overflow-y-auto">
+    <div id="mobile-menu" class="lg:hidden bg-white border-b border-slate-100 px-4 pt-2 pb-24 space-y-2 shadow-xl absolute w-full z-50 max-h-[70vh] overflow-y-auto">
       <button onclick="nav('home')" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Home</button>
       <button onclick="nav('cases')" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Landmark Cases</button>
       <button onclick="nav('blogs')" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Articles & Blogs</button>
@@ -105,7 +105,7 @@
         <button onclick="openAuthModal()" class="w-full btn-gold font-bold py-3 rounded-xl shadow-lg text-slate-900">Sign In</button>
       </div>
       
-      <div id="mobile-profile" class="hidden pt-3 mt-2 border-t border-slate-100 space-y-2">
+    <div id="mobile-profile" class="hidden pt-3 mt-2 border-t border-slate-100 space-y-3">
         <button onclick="handleMobileProfileClick()" class="w-full text-left p-3 bg-amber-50/60 hover:bg-amber-100/60 border border-amber-200/50 rounded-xl transition flex items-center justify-between group cursor-pointer">
           <div class="flex items-center gap-2">
             <i class="fa-solid fa-circle-user text-amber-600 text-lg"></i>
@@ -114,7 +114,8 @@
           <i class="fa-solid fa-chevron-right text-xs text-amber-500"></i>
         </button>
 
-        <button onclick="logout()" class="w-full text-left px-4 py-3 font-bold text-rose-600 hover:bg-rose-50 rounded-xl transition flex items-center gap-2 border border-rose-100 bg-rose-50/30">
+        <!-- Redesigned Sign Out Button -->
+        <button onclick="logout()" class="w-full text-left px-4 py-3 font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 rounded-xl transition flex items-center gap-2 border border-rose-200 shadow-sm cursor-pointer mb-6">
           <i class="fa-solid fa-right-from-bracket"></i> Sign Out
         </button>
       </div>
