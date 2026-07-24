@@ -46,6 +46,21 @@
 
     #mobile-menu { transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out; max-height: 0; opacity: 0; overflow: hidden; }
     #mobile-menu.open { max-height: 500px; opacity: 1; }
+    /* Visible scrollbar for mobile menu */
+#mobile-menu::-webkit-scrollbar {
+  width: 6px;
+}
+#mobile-menu::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 8px;
+}
+#mobile-menu::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 8px;
+}
+#mobile-menu::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
   </style>
 </head>
 <body class="flex flex-col min-h-screen">
@@ -92,38 +107,35 @@
     </div>
 
 <!-- Mobile Menu -->
-    <div id="mobile-menu" class="lg:hidden bg-white border-b border-slate-100 px-4 pt-2 pb-8 space-y-2 shadow-2xl absolute w-full z-50 max-h-[80vh] overflow-y-auto">
-      <button onclick="nav('home')" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Home</button>
-      <button onclick="nav('cases')" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Landmark Cases</button>
-      <button onclick="nav('blogs')" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Articles & Blogs</button>
-      <button onclick="nav('notes')" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Study Notes</button>
-      <button onclick="nav('webinar')" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Webinars</button>
-      <button onclick="nav('quiz')" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Live Quiz</button>
-      <button onclick="nav('contact')" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Contact</button>
-      <button onclick="nav('qa')" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Q&A</button>
-      <button onclick="nav('jobs')" class="block w-full text-left px-4 py-2.5 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg">Career</button>
+    <div id="mobile-menu" class="lg:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-6 space-y-1.5 shadow-2xl absolute w-full z-50 max-h-[65vh] overflow-y-auto">
+      <button onclick="nav('home')" class="block w-full text-left px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg text-sm">Home</button>
+      <button onclick="nav('cases')" class="block w-full text-left px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg text-sm">Landmark Cases</button>
+      <button onclick="nav('blogs')" class="block w-full text-left px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg text-sm">Articles & Blogs</button>
+      <button onclick="nav('notes')" class="block w-full text-left px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg text-sm">Study Notes</button>
+      <button onclick="nav('webinar')" class="block w-full text-left px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg text-sm">Webinars</button>
+      <button onclick="nav('quiz')" class="block w-full text-left px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg text-sm">Live Quiz</button>
+      <button onclick="nav('contact')" class="block w-full text-left px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg text-sm">Contact</button>
+      <button onclick="nav('qa')" class="block w-full text-left px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg text-sm">Q&A</button>
+      <button onclick="nav('jobs')" class="block w-full text-left px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50 rounded-lg text-sm">Career</button>
       
-      <!-- SIGN IN BUTTON (VISIBLE WHEN LOGGED OUT) -->
-      <div id="mobile-auth-btn" class="pt-3 pb-2 border-t border-slate-100">
-        <button onclick="openAuthModal()" class="w-full btn-gold font-bold py-3 rounded-xl shadow-lg text-slate-900">Sign In</button>
+      <!-- Action Section at Bottom -->
+      <div id="mobile-auth-btn" class="pt-2 pb-2 border-t border-slate-100">
+        <button onclick="openAuthModal()" class="w-full btn-gold font-bold py-2.5 rounded-xl shadow-md text-slate-900 text-sm">Sign In</button>
       </div>
       
-      <!-- PROFILE CARD (VISIBLE WHEN LOGGED IN) -->
-      <div id="mobile-profile" class="hidden pt-3 border-t border-slate-100">
-        <div class="w-full p-3 bg-amber-50/80 border border-amber-200/80 rounded-xl flex items-center justify-between">
-    
-          <div class="flex items-center gap-2.5 overflow-hidden">
-            <i class="fa-solid fa-circle-user text-amber-600 text-xl flex-shrink-0"></i>
-            <span id="mobile-user-name" class="font-bold text-slate-900 truncate text-sm"></span>
+      <div id="mobile-profile" class="hidden pt-2 border-t border-slate-100">
+        <div class="w-full p-2.5 bg-amber-50/80 border border-amber-200/80 rounded-xl flex items-center justify-between">
+          <div class="flex items-center gap-2 overflow-hidden">
+            <i class="fa-solid fa-circle-user text-amber-600 text-lg flex-shrink-0"></i>
+            <span id="mobile-user-name" class="font-bold text-slate-900 truncate text-xs"></span>
           </div>
-          
-          <button onclick="logout()" class="flex-shrink-0 bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition shadow-sm flex items-center gap-1.5">
+          <button onclick="logout()" class="flex-shrink-0 bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs px-2.5 py-1 rounded-lg transition shadow-sm flex items-center gap-1">
             <i class="fa-solid fa-right-from-bracket text-[10px]"></i>
             <span>Sign Out</span>
           </button>
         </div>
-  </nav>
-
+      </div>
+    </div>
   <!-- AUTH MODAL -->
   <div id="auth-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden z-[100] flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
     <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300" id="auth-modal-content">
